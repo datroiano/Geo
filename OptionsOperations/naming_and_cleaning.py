@@ -104,4 +104,42 @@ def create_options_ticker(ticker, strike, expiration_year, expiration_month, exp
 
     return constructed_return
 
-# should be good enough (might need to revisit this)
+
+def to_unix_time(datetime_str):
+    try:
+        # Parse the input datetime string to a datetime object
+        dt_obj = datetime.strptime(datetime_str, '%Y-%m-%d %H:%M:%S')
+
+        # Convert the datetime object to Unix timestamp in milliseconds
+        unix_time_ms = int(time.mktime(dt_obj.timetuple()) * 1000)
+        return str(unix_time_ms)
+    except ValueError:
+        return "Invalid datetime format. Please provide a datetime in the format '%Y-%m-%d %H:%M:%S'."
+
+
+def from_unix_time(unix_time_str):
+    try:
+        # Parse the input Unix timestamp string to an integer
+        unix_time_ms = int(unix_time_str)
+
+        # Convert Unix timestamp in milliseconds to a datetime object
+        dt_obj = datetime.fromtimestamp(unix_time_ms / 1000.0)
+
+        # Format the datetime object as a string
+        formatted_datetime = dt_obj.strftime('%Y-%m-%d %H:%M:%S')
+        return formatted_datetime
+    except ValueError:
+        return "Invalid Unix timestamp format. Please provide a numerical Unix timestamp."
+
+# Example usage:
+# unix_time = to_unix_time('2023-09-13 15:30:00')
+# formatted_datetime = from_unix_time('1694338500000')
+
+
+def next_friday():
+    today = date.today()
+    days_until_friday = (4 - today.weekday()) % 7   # Calculate days until next Friday (0=Monday, 1=Tuesday)
+    if days_until_friday == 0:
+        days_until_friday = 7  # If today is Friday, move to next Friday
+    next_friday_date = today + timedelta(days=days_until_friday)
+    return next_friday_date
