@@ -1,7 +1,7 @@
 from PDFCreation.__init__ import *
 
 
-def raw_data_pdf(self, cleaned_response):
+def raw_data_pdf(cleaned_response):
     download_folder = os.path.expanduser("~" + os.sep + "Downloads")
     pdf_filename = os.path.join(download_folder, "raw_data.pdf")
 

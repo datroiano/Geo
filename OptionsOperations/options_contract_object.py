@@ -21,10 +21,11 @@ class OptionsContract:
 
 
 class OptionsContractsPriceData(OptionsContract):
-    def __init__(self, options_contract=None, from_date=None, to_date=None, window_start_time=None, window_end_time=None,
+    def __init__(self, options_contract=None, from_date=None, to_date=None, window_start_time=None,
+                 window_end_time=None,
                  timespan=None, polygon_api_key='r1Jqp6JzYYhbt9ak10x9zOpoj1bf58Zz', multiplier=1):
         super().__init__(options_contract.ticker, options_contract.strike, options_contract.expiration_date,
-                             options_contract.contract_type)
+                         options_contract.contract_type)
 
         self.polygon_api_key = polygon_api_key
         self.from_date = from_date
@@ -60,9 +61,10 @@ class OptionsContractsPriceData(OptionsContract):
             return None
 
         cleaned_response = {
-            from_unix_time(timestamp['t']): {'volume': timestamp['v'], 'volume_weighted': timestamp['vw'], 'open': timestamp['o'],
-                             'close': timestamp['c'], 'high': timestamp['h'], 'low': timestamp['l'],
-                             'number': timestamp['n']} for timestamp in response['results']}
+            from_unix_time(timestamp['t']): {'volume': timestamp['v'], 'volume_weighted': timestamp['vw'],
+                                             'open': timestamp['o'],
+                                             'close': timestamp['c'], 'high': timestamp['h'], 'low': timestamp['l'],
+                                             'number': timestamp['n']} for timestamp in response['results']}
 
         return cleaned_response
 
@@ -121,9 +123,6 @@ class OptionsContractsPriceData(OptionsContract):
             return response
 
 
-
-
-
 # Using an OptionsContract instance
 test_contract = OptionsContract("AAPL", 180, '2023-09-29')
 test_contract_data = OptionsContractsPriceData(options_contract=test_contract,
@@ -132,5 +131,3 @@ test_contract_data = OptionsContractsPriceData(options_contract=test_contract,
                                                timespan='minute')
 
 print(test_contract_data.pull_options_price_data())
-
-
