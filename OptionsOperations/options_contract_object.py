@@ -130,4 +130,3 @@ test_contract_data = OptionsContractsPriceData(options_contract=test_contract,
                                                window_start_time='09:30:00', window_end_time='16:30:00',
                                                timespan='minute')
 
-print(test_contract_data.pull_options_price_data())
