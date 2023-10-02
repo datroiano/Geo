@@ -62,7 +62,7 @@ class OptionsContractsPriceData(OptionsContract):
 
         cleaned_response = {
             from_unix_time(timestamp['t']): {'volume': timestamp['v'], 'volume_weighted': timestamp['vw'],
-                                             'open': timestamp['o'],
+                                             'open': timestamp['o'], 'unix_time': timestamp['t'],
                                              'close': timestamp['c'], 'high': timestamp['h'], 'low': timestamp['l'],
                                              'number': timestamp['n']} for timestamp in response['results']}
 
@@ -129,4 +129,5 @@ test_contract_data = OptionsContractsPriceData(options_contract=test_contract,
                                                from_date='2023-09-28', to_date='2023-09-28',
                                                window_start_time='09:30:00', window_end_time='16:30:00',
                                                timespan='minute')
-
+printable = test_contract_data.pull_options_price_data()
+# print(printable)
