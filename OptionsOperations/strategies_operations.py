@@ -107,28 +107,79 @@ class TwoOptionStrategy:
         exit_window_start = int(to_unix_time(exit_window_start))
         exit_window_end = int(to_unix_time(exit_window_end))
 
-        # Create a set of unix_time values from op_2_data for faster lookup
         op_2_unix_times = set(value['unix_time'] for value in self.op_2_data.values())
-
-        # Create a new dictionary containing only the elements from op_1_data with unix_time in op_2_unix_times
         self.op_1_data = {key: value for key, value in self.op_1_data.items() if value['unix_time'] in op_2_unix_times}
+        op_1_unix_times = set(value['unix_time'] for value in self.op_1_data.values())
+        self.op_2_data = {key: value for key, value in self.op_2_data.items() if value['unix_time'] in op_1_unix_times}
 
-        entry_data = [value for value in self.op_1_data.values() if
-                      entry_window_start <= value['unix_time'] <= entry_window_end]
+        entry_data_1 = [value for value in self.op_1_data.values() if
+                        entry_window_start <= value['unix_time'] <= entry_window_end]
 
-        exit_data = [value for value in self.op_1_data.values() if
-                     exit_window_start <= value['unix_time'] <= exit_window_end]
+        exit_data_1 = [value for value in self.op_1_data.values() if
+                       exit_window_start <= value['unix_time'] <= exit_window_end]
 
-        # Do nested for loop to run simulation for each entry/end time pair here
+        entry_data_2 = [value for value in self.op_2_data.values() if
+                        entry_window_start <= value['unix_time'] <= entry_window_end]
+
+        exit_data_2 = [value for value in self.op_2_data.values() if
+                       exit_window_start <= value['unix_time'] <= exit_window_end]
+
+        combined_entry_data = [
+            {
+                'unix_time': item1['unix_time'],
+                'time': from_unix_time(item1['unix_time']),  # You need to define this function
+                'strategy_value': item1['low'] + item2['low'],
+                'strategy_volume': item1['volume'] + item2['volume']
+            }
+            for item1 in entry_data_1
+            for item2 in entry_data_2
+            if item1['unix_time'] == item2['unix_time']
+        ]
+
+        combined_exit_data = [
+            {
+                'unix_time': item1['unix_time'],
+                'time': from_unix_time(item1['unix_time']),  # You need to define this function
+                'strategy_value': item1['low'] + item2['low'],
+                'strategy_volume': item1['volume'] + item2['volume']
+            }
+            for item1 in exit_data_1
+            for item2 in exit_data_2
+            if item1['unix_time'] == item2['unix_time']
+        ]
+
+        simulation_data = []
+        for item1 in combined_entry_data:
+            entry_time = item1['unix_time']
+            for item2 in combined_exit_data:
+                exit_time = item2['unix_time']
+
+                if entry_time < exit_time:
+                    entry_strategy_value = item1['strategy_value']
+                    exit_strategy_value = item2['strategy_value']
+
+                    profit_loss_dollars = (exit_strategy_value - entry_strategy_value) * size
+                    profit_loss_percent = ((exit_strategy_value - entry_strategy_value) * size / entry_strategy_value)
+
+                    simulation_data.append({
+                        'entry_time': from_unix_time(entry_time),
+                        'exit_time': from_unix_time(exit_time),
+                        'entry_strategy_value': round(entry_strategy_value * size, ndigits=2),
+                        'exit_strategy_value': round(exit_strategy_value * size, ndigits=2),
+                        'profit_loss_dollars': round(profit_loss_dollars, ndigits=2),
+                        'profit_loss_percent': round(profit_loss_percent, ndigits=2)
+                    })
+
+        print(simulation_data)
 
 
-contract1 = oc.OptionsContract("AAPL", 170, '2023-09-29', contract_type=True)
+contract1 = oc.OptionsContract("AAPL", 170, '2023-09-29', is_call=True)
 contract1data = oc.OptionsContractsPriceData(options_contract=contract1,
                                              from_date='2023-09-28', to_date='2023-09-28',
                                              window_start_time='09:30:00', window_end_time='16:30:00',
                                              timespan='minute')
 
-contract2 = oc.OptionsContract("AAPL", 170, '2023-09-29', contract_type=False)
+contract2 = oc.OptionsContract("AAPL", 170, '2023-09-29', is_call=False)
 contract2data = oc.OptionsContractsPriceData(options_contract=contract1,
                                              from_date='2023-09-28', to_date='2023-09-28',
                                              window_start_time='09:30:00', window_end_time='16:30:00',

@@ -13,11 +13,11 @@ from OptionsOperations.naming_and_cleaning import *
 
 
 class OptionsContract:
-    def __init__(self, ticker, strike, expiration_date, contract_type=True):
+    def __init__(self, ticker, strike, expiration_date, is_call=True):
         self.ticker = str(ticker).upper()
         self.strike = float(strike)
         self.expiration_date = str(expiration_date)
-        self.contract_type = contract_type
+        self.is_call = is_call
 
 
 class OptionsContractsPriceData(OptionsContract):
@@ -25,7 +25,7 @@ class OptionsContractsPriceData(OptionsContract):
                  window_end_time=None,
                  timespan=None, polygon_api_key='r1Jqp6JzYYhbt9ak10x9zOpoj1bf58Zz', multiplier=1):
         super().__init__(options_contract.ticker, options_contract.strike, options_contract.expiration_date,
-                         options_contract.contract_type)
+                         options_contract.is_call)
 
         self.polygon_api_key = polygon_api_key
         self.from_date = from_date
@@ -44,7 +44,7 @@ class OptionsContractsPriceData(OptionsContract):
 
         options_ticker = create_options_ticker(ticker=self.ticker, strike=self.strike, expiration_year=exp_year,
                                                expiration_month=exp_month, expiration_day=exp_day,
-                                               contract_type=self.contract_type)
+                                               contract_type=self.is_call)
 
         # Polygon verification
         headers = {
@@ -77,7 +77,7 @@ class OptionsContractsPriceData(OptionsContract):
 
         options_ticker = create_options_ticker(ticker=self.ticker, strike=self.strike, expiration_year=exp_year,
                                                expiration_month=exp_month, expiration_day=exp_day,
-                                               contract_type=self.contract_type)
+                                               contract_type=self.is_call)
 
         # Polygon verification
         headers = {
@@ -104,7 +104,7 @@ class OptionsContractsPriceData(OptionsContract):
 
         options_ticker = create_options_ticker(ticker=self.ticker, strike=self.strike, expiration_year=exp_year,
                                                expiration_month=exp_month, expiration_day=exp_day,
-                                               contract_type=self.contract_type)
+                                               contract_type=self.is_call)
 
         # Polygon verification
         headers = {
