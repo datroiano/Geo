@@ -34,16 +34,16 @@ class OptionsContractsPriceData(OptionsContract):
         self.window_end_time = window_end_time
         self.timespan = timespan
         self.multiplier = multiplier
+        self.exp_day = int(self.expiration_date[8:])  # 2023-09-29
+        self.exp_month = int(self.expiration_date[5:7])
+        self.exp_year = int(self.expiration_date[2:4])
 
     def pull_options_price_data(self):
-        exp_day = int(self.expiration_date[8:])  # 2023-09-29
-        exp_month = int(self.expiration_date[5:7])
-        exp_year = int(self.expiration_date[2:4])
         from_date = to_unix_time(f'{self.from_date} {self.window_start_time}')
         to_date = to_unix_time(f'{self.to_date} {self.window_end_time}')
 
-        options_ticker = create_options_ticker(ticker=self.ticker, strike=self.strike, expiration_year=exp_year,
-                                               expiration_month=exp_month, expiration_day=exp_day,
+        options_ticker = create_options_ticker(ticker=self.ticker, strike=self.strike, expiration_year=self.exp_year,
+                                               expiration_month=self.exp_month, expiration_day=self.exp_day,
                                                contract_type=self.is_call)
 
         # Polygon verification
@@ -69,14 +69,11 @@ class OptionsContractsPriceData(OptionsContract):
         return cleaned_response
 
     def get_query_count_for_timeperiod(self):
-        exp_day = int(self.expiration_date[8:])  # 2023-09-29
-        exp_month = int(self.expiration_date[5:7])
-        exp_year = int(self.expiration_date[2:4])
         from_date = to_unix_time(f'{self.from_date} {self.window_start_time}')
         to_date = to_unix_time(f'{self.to_date} {self.window_end_time}')
 
-        options_ticker = create_options_ticker(ticker=self.ticker, strike=self.strike, expiration_year=exp_year,
-                                               expiration_month=exp_month, expiration_day=exp_day,
+        options_ticker = create_options_ticker(ticker=self.ticker, strike=self.strike, expiration_year=self.exp_year,
+                                               expiration_month=self.exp_month, expiration_day=self.exp_day,
                                                contract_type=self.is_call)
 
         # Polygon verification
@@ -96,14 +93,11 @@ class OptionsContractsPriceData(OptionsContract):
             return response['queryCount']
 
     def get_raw_data(self):
-        exp_day = int(self.expiration_date[8:])  # 2023-09-29
-        exp_month = int(self.expiration_date[5:7])
-        exp_year = int(self.expiration_date[2:4])
         from_date = to_unix_time(f'{self.from_date} {self.window_start_time}')
         to_date = to_unix_time(f'{self.to_date} {self.window_end_time}')
 
-        options_ticker = create_options_ticker(ticker=self.ticker, strike=self.strike, expiration_year=exp_year,
-                                               expiration_month=exp_month, expiration_day=exp_day,
+        options_ticker = create_options_ticker(ticker=self.ticker, strike=self.strike, expiration_year=self.exp_year,
+                                               expiration_month=self.exp_month, expiration_day=self.exp_day,
                                                contract_type=self.is_call)
 
         # Polygon verification

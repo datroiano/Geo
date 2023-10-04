@@ -170,7 +170,7 @@ class TwoOptionStrategy:
                         'profit_loss_percent': round(profit_loss_percent, ndigits=2)
                     })
 
-        print(simulation_data)
+        return simulation_data
 
 
 contract1 = oc.OptionsContract("AAPL", 170, '2023-09-29', is_call=True)
@@ -186,5 +186,9 @@ contract2data = oc.OptionsContractsPriceData(options_contract=contract1,
                                              timespan='minute')
 
 simulation = TwoOptionStrategy(contract1data.pull_options_price_data(), contract2data.pull_options_price_data())
-simulation.long_strangle_simulation(entry_window_start='2023-09-28 09:30:00', entry_window_end='2023-09-28 11:30:00',
-                                    exit_window_start='2023-09-28 11:30:00', exit_window_end='2023-09-28 14:30:00')
+x = simulation.long_strangle_simulation(entry_window_start='2023-09-28 09:30:00',
+                                        entry_window_end='2023-09-28 11:30:00',
+                                        exit_window_start='2023-09-28 11:30:00', exit_window_end='2023-09-28 14:30:00')
+
+
+
