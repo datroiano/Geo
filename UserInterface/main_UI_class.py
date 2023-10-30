@@ -33,7 +33,7 @@ class LocalUI:
         day_trade_date.grid(column=6, row=1, columnspan=2, sticky="nsew")
 
         data_start_label = tk.Label(self.window, text="Data Retrieval Start", font=("Times New Roman", 15),
-                                    justify="center")
+                                    justify="center", height=1)
         data_start_label.grid(column=0, row=2, columnspan=4, sticky="nsew")
 
         data_end_label = tk.Label(self.window, text="Data Retrieval End", font=("Times New Roman", 15),
@@ -58,6 +58,10 @@ class LocalUI:
 
         data_end = tk.Entry(self.window, font=("Times New Roman", 15), justify="center")
         data_end.grid(column=4, row=3, columnspan=3, sticky="nsew")
+
+        option_data_section_label = tk.Label(self.window, text="Option Contract Information",
+                                             font=("Times New Roman", 15), justify="center")
+        option_data_section_label.grid(column=0, columnspan=8, row=4)
 
         self.window.mainloop()
 
