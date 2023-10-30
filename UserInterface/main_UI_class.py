@@ -7,12 +7,12 @@ class LocalUI:
         self.window.geometry("750x750")
         self.window.title("Report Generator")
 
-        for i in range(8):
-            self.window.columnconfigure(i, weight=1)
-
-        self.window.rowconfigure(0, weight=2)
-        for i in range(1, 10):
-            self.window.rowconfigure(i, weight=1)
+        # for i in range(8): # Incorporate if you want to make a larger UI in general
+        #     self.window.columnconfigure(i, weight=1)
+        #
+        # self.window.rowconfigure(0, weight=2)
+        # for i in range(1, 10):
+        #     self.window.rowconfigure(i, weight=1)
 
         main_title = tk.Label(master=self.window, text="Report Generator (Trade Simulator)", justify="center",
                               font=("Times New Roman", 20), fg="white", bg="black")
@@ -62,6 +62,14 @@ class LocalUI:
         option_data_section_label = tk.Label(self.window, text="Option Contract Information",
                                              font=("Times New Roman", 15), justify="center")
         option_data_section_label.grid(column=0, columnspan=8, row=4)
+
+        contract_1_label = tk.Label(self.window, text="Contract 1", font=("Times New Roman", 12), justify="center")
+        contract_1_label.grid(column=0, columnspan=4, row=5)
+
+        contract_2_label = tk.Label(self.window, text="Contract 2", font=("Times New Roman", 12), justify="center")
+        contract_2_label.grid(column=4, row=5, columnspan=4)
+
+
 
         self.window.mainloop()
 

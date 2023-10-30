@@ -184,7 +184,6 @@ class MetaAnalysis:
         return [entry['profit_loss_percent'] for entry in self.simulation_data]
 
 
-
 contract1 = oc.OptionsContract("AAPL", 170, '2023-09-29', is_call=True)
 contract1data = oc.OptionsContractsPriceData(options_contract=contract1,
                                              from_date='2023-09-28', to_date='2023-09-28',
