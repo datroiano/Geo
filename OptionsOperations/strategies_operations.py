@@ -173,6 +173,18 @@ class TwoOptionStrategy:
         return simulation_data
 
 
+class MetaAnalysis:
+    def __init__(self, simulation_data):
+        self.simulation_data = simulation_data
+
+    def profit_loss_dollars_table(self):
+        return [entry['profit_loss_dollars'] for entry in self.simulation_data]
+
+    def profit_loss_percent_table(self):
+        return [entry['profit_loss_percent'] for entry in self.simulation_data]
+
+
+
 contract1 = oc.OptionsContract("AAPL", 170, '2023-09-29', is_call=True)
 contract1data = oc.OptionsContractsPriceData(options_contract=contract1,
                                              from_date='2023-09-28', to_date='2023-09-28',
@@ -191,4 +203,5 @@ x = simulation.long_strangle_simulation(entry_window_start='2023-09-28 09:30:00'
                                         exit_window_start='2023-09-28 11:30:00', exit_window_end='2023-09-28 14:30:00')
 
 
-
+y = MetaAnalysis(x)
+z = y.profit_loss_percent_table()

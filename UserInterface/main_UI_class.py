@@ -53,6 +53,12 @@ class LocalUI:
         data_end_am_pm = tk.OptionMenu(self.window, pm_default, *drop_am_pm)
         data_end_am_pm.grid(column=7, row=3, sticky="nsew")
 
+        data_start = tk.Entry(self.window, font=("Times New Roman", 15), justify="center")
+        data_start.grid(column=0, row=3, columnspan=3, sticky="nsew")
+
+        data_end = tk.Entry(self.window, font=("Times New Roman", 15), justify="center")
+        data_end.grid(column=4, row=3, columnspan=3, sticky="nsew")
+
         self.window.mainloop()
 
 
