@@ -116,6 +116,7 @@ class LocalUI:
         theme = AnalogThemes(x)
         theme.setDracula()
 
+
         self.window.mainloop()
 
 
