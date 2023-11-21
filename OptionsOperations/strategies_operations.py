@@ -204,3 +204,5 @@ x = simulation.long_strangle_simulation(entry_window_start='2023-09-28 09:30:00'
 
 y = MetaAnalysis(x)
 z = y.profit_loss_percent_table()
+
+
