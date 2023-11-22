@@ -6,7 +6,7 @@ from tktimepicker import AnalogPicker, AnalogThemes, constants
 class LocalUI:
     def __init__(self):
         self.window = tk.Tk()
-        self.window.geometry("755x750")
+        self.window.geometry("1500x1000")
         self.window.title("Report Generator")
 
         # for i in range(8): # Incorporate if you want to make a larger UI in general
@@ -17,8 +17,8 @@ class LocalUI:
         #     self.window.rowconfigure(i, weight=1)
 
         tk.Label(master=self.window, text="Report Generator (Trade Simulator)",
-                 justify="center", font=("Times New Roman", 20), fg="white", bg="black", width=50,
-                 height=2).grid(column=0, row=0, columnspan=8, sticky="nsew")
+                 justify="center", font=("Times New Roman", 20), fg="white", bg="black", width=100,
+                 height=2).grid(column=0, row=0, columnspan=16, sticky="nsew")
 
         tk.Label(master=self.window, text="Underlying Ticker:", bg="#636262", font=("Times New Roman", 12),
                  justify="center", height=2).grid(column=0, row=1, columnspan=2, sticky="nsew")
@@ -32,40 +32,39 @@ class LocalUI:
         day_trade_date = DateEntry(master=self.window, bg='#9c9a9a', font=("Times New Roman", 12), justify="center")
         day_trade_date.grid(column=6, row=1, columnspan=2, sticky="nsew")
 
-        tk.Label(self.window, text="Data Retrieval Start", font=("Times New Roman", 15), justify="center",
-                 height=1).grid(column=0, row=2, columnspan=4, sticky="nsew")
+        tk.Label(master=self.window, text="Data Period Start", bg="#636262", font=("Times New Roman", 12),
+                 justify="center", height=2).grid(column=8, row=1, columnspan=8, sticky="nsew")
 
-        tk.Label(self.window, text="Data Retrieval End", font=("Times New Roman", 15),
-                 justify="center").grid(column=4, row=2, columnspan=4, sticky="nsew")
+        tk.Label(self.window, text="Retrieval Period Start", font=("Times New Roman", 15), justify="center",
+                 bg="#9c9a9a", height=1).grid(column=8, row=2, columnspan=4, sticky="nsew")
 
-        am_default = tk.StringVar()
-        am_default.set("AM")
+        tk.Label(self.window, text="Retrieval Period End", font=("Times New Roman", 15), bg="#9c9a9a",
+                 justify="center").grid(column=12, row=2, columnspan=4, sticky="nsew")
 
-        pm_default = tk.StringVar()
-        pm_default.set("PM")
+        data_period_start = AnalogPicker(self.window, type=constants.HOURS12)
+        data_period_start.grid(column=8, row=3, sticky="nsew", columnspan=4)
+        data_period_start.setHours(9)
+        data_period_start.setMinutes(30)
 
-        drop_am_pm = ['AM', 'PM']
-        data_start_am_pm = tk.OptionMenu(self.window, am_default, *drop_am_pm)
-        data_start_am_pm.grid(column=3, row=3, sticky="nsew")
+        theme = AnalogThemes(data_period_start)
+        theme.setDracula()
 
-        data_end_am_pm = tk.OptionMenu(self.window, pm_default, *drop_am_pm)
-        data_end_am_pm.grid(column=7, row=3, sticky="nsew")
+        data_period_end = AnalogPicker(self.window, type=constants.HOURS12, period=constants.PM)
+        data_period_end.grid(column=12, row=3, sticky="nsew", columnspan=4)
+        data_period_end.setHours(4)
+        data_period_end.setMinutes(00)
 
-        data_start = tk.Entry(self.window, font=("Times New Roman", 15), justify="center")
-        data_start.grid(column=0, row=3, columnspan=3, sticky="nsew")
+        theme = AnalogThemes(data_period_end)
+        theme.setDracula()
 
-        data_end = tk.Entry(self.window, font=("Times New Roman", 15), justify="center")
-        data_end.grid(column=4, row=3, columnspan=3, sticky="nsew")
+        tk.Label(self.window, text="Option Contract Information", font=("Times New Roman", 15), bg="#9c9a9a",
+                 justify="center").grid(column=0, columnspan=16, row=4, sticky="nsew")
 
-        tk.Label(self.window, text="Option Contract Information", font=("Times New Roman", 15),
-                 justify="center").grid(column=0, columnspan=8, row=4)
+        tk.Label(self.window, text="Contract 1", font=("Times New Roman", 12), bg="gray",
+                 justify="center").grid(column=0, columnspan=8, row=5, sticky="nsew")
 
-        tk.Label(self.window, text="Contract 1", font=("Times New Roman", 12), justify="center").grid(column=0,
-                                                                                                      columnspan=4,
-                                                                                                      row=5)
-
-        tk.Label(self.window, text="Contract 2", font=("Times New Roman", 12), justify="center").grid(column=4, row=5,
-                                                                                                      columnspan=4)
+        tk.Label(self.window, text="Contract 2", font=("Times New Roman", 12), bg="gray",
+                 justify="center").grid(column=8, row=5, columnspan=8, sticky="nsew")
 
         tk.Label(self.window, text="Strike:", font=("Times New Roman", 12), justify="center").grid(column=0, row=6,
                                                                                                    columnspan=2)
@@ -116,8 +115,24 @@ class LocalUI:
         theme = AnalogThemes(x)
         theme.setDracula()
 
+        y = AnalogPicker(self.window, type=constants.HOURS12)
+        y.grid(column=4, row=9, sticky="nsew", columnspan=4)
+        self.y = y.period()
+
+        theme = AnalogThemes(y)
+        theme.setDracula()
+
+
+        data_test_button = tk.Button(self.window, text="Test Data", font=("Times New Roman", 12), justify="center",
+                                     command=self.grab_data)
+        data_test_button.grid(column=0, row=10)
 
         self.window.mainloop()
+
+
+    def grab_data(self):
+        x = self.y
+        print(x)
 
 
 UI = LocalUI()
