@@ -170,7 +170,7 @@ class TwoOptionStrategy:
                         'entry_strategy_value': round(entry_strategy_value * size, ndigits=2),
                         'exit_strategy_value': round(exit_strategy_value * size, ndigits=2),
                         'profit_loss_dollars': round(profit_loss_dollars, ndigits=2),
-                        'profit_loss_percent': round(profit_loss_percent, ndigits=2)
+                        'profit_loss_percent': round(profit_loss_percent, ndigits=4)
                     })
 
         return simulation_data
@@ -199,24 +199,35 @@ class MetaAnalysis:
         return simulation_df
 
 
-contract1 = oc.OptionsContract("AAPL", 190, '2023-12-01', is_call=True)
+ticker = 'AMZN'
+trade_date = '2023-10-26'
+expirations = '2023-10-27'
+strike1 = 121
+strike2 = strike1
+
+contract1 = oc.OptionsContract(ticker, strike1, expirations, is_call=True)
 contract1data = oc.OptionsContractsPriceData(options_contract=contract1,
-                                             from_date='2023-11-28', to_date='2023-11-28',
+                                             from_date=trade_date, to_date=trade_date,
                                              window_start_time='09:30:00', window_end_time='16:30:00',
                                              timespan='minute')
 
-contract2 = oc.OptionsContract("AAPL", 190, '2023-12-01', is_call=False)
+contract2 = oc.OptionsContract(ticker, strike2, expirations, is_call=False)
 contract2data = oc.OptionsContractsPriceData(options_contract=contract1,
-                                             from_date='2023-11-28', to_date='2023-11-28',
+                                             from_date=trade_date, to_date=trade_date,
                                              window_start_time='09:30:00', window_end_time='16:30:00',
                                              timespan='minute')
 
 simulation = TwoOptionStrategy(contract1data.pull_options_price_data(), contract2data.pull_options_price_data())
-long_straddle_example = simulation.long_strangle_simulation(entry_window_start='2023-11-28 09:30:00',
-                                                            entry_window_end='2023-11-28 11:30:00',
-                                                            exit_window_start='2023-11-28 14:30:00',
-                                                            exit_window_end='2023-11-28 16:00:00')
+long_straddle_example = simulation.long_strangle_simulation(entry_window_start=f'{trade_date} 09:30:00',
+                                                            entry_window_end=f'{trade_date} 11:30:00',
+                                                            exit_window_start=f'{trade_date} 14:30:00',
+                                                            exit_window_end=f'{trade_date} 16:00:00')
 
 meta_long_straddle_example = MetaAnalysis(simulation_data=long_straddle_example)
+average_return = statistics.mean(meta_long_straddle_example.profit_loss_percent_table())
+standard_deviation_return = statistics.stdev(meta_long_straddle_example.profit_loss_percent_table())
 excel_ready_data = meta_long_straddle_example.create_data_frame()
-save_to_excel(excel_ready_data)
+
+save_to_excel(excel_ready_data, avg_return=average_return, std_dev=standard_deviation_return)
+open_recent_download()
+
