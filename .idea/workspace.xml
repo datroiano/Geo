@@ -5,7 +5,22 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9ec2a096-cc25-4021-83ad-c171cb77a001" name="Changes" comment="init">
+      <change afterPath="$PROJECT_DIR$/OnlineTools/mysite/tradesimulation/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/OnlineTools/mysite/tradesimulation/admin.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/OnlineTools/mysite/tradesimulation/apps.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/OnlineTools/mysite/tradesimulation/migrations/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/OnlineTools/mysite/tradesimulation/models.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/OnlineTools/mysite/tradesimulation/templates/trade_simulation.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/OnlineTools/mysite/tradesimulation/tests.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/OnlineTools/mysite/tradesimulation/urls.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/OnlineTools/mysite/tradesimulation/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/Geo.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/Geo.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/OnlineTools/mysite/mysite/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/OnlineTools/mysite/mysite/settings.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/OnlineTools/mysite/mysite/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/OnlineTools/mysite/mysite/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/OnlineTools/mysite/polls/apps.py" beforeDir="false" afterPath="$PROJECT_DIR$/OnlineTools/mysite/polls/apps.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/OptionsOperations/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/OptionsOperations/__init__.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/OptionsOperations/strategies_operations.py" beforeDir="false" afterPath="$PROJECT_DIR$/OptionsOperations/strategies_operations.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/UserInterface/main_UI_class.py" beforeDir="false" afterPath="$PROJECT_DIR$/UserInterface/main_UI_class.py" afterDir="false" />
     </list>
@@ -66,6 +81,11 @@
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\dtroiano\PycharmProjects\Geo\OnlineTools\mysite\tradesimulation\templates" />
+    </key>
+  </component>
   <component name="RunManager">
     <configuration name="main_UI_class" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="Geo" />

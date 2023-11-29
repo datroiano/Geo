@@ -117,7 +117,7 @@ class LocalUI:
 
         y = AnalogPicker(self.window, type=constants.HOURS12)
         y.grid(column=4, row=9, sticky="nsew", columnspan=4)
-        self.y = y.period()
+        self.y = y.period()  # for test data function in class
 
         theme = AnalogThemes(y)
         theme.setDracula()

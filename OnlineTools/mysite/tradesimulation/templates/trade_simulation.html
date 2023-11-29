@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Long Straddle/Straddle Trade Simulation</title>
+    <style>
+        body {
+            text-align: center;
+        }
+
+        table {
+            margin-left: auto;
+            margin-right: auto;
+            width: 70%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 8px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+    <script>
+        // Function to calculate the next Friday's date
+        function getNextFridayDate() {
+            let today = new Date();
+            let dayOfWeek = today.getDay();
+            let offset = (dayOfWeek <= 5) ? (5 - dayOfWeek) : (5 - dayOfWeek + 7);
+            let nextFriday = new Date(today);
+            nextFriday.setDate(today.getDate() + offset);
+
+            // Format the date as "YYYY-MM-DD" for the date input field
+            let formattedDate = nextFriday.toISOString().split('T')[0];
+            return formattedDate;
+        }
+
+        // Function to set default expiration dates to next Fridays and default times for trade entry and exit
+        function setDefaultValues() {
+            document.getElementById("ticker").value = "AAPL"; // Default ticker
+            document.getElementById("tradeDate").value = new Date().toISOString().split('T')[0]; // Default trade date
+            document.getElementById("expiration1").value = getNextFridayDate();
+            document.getElementById("expiration2").value = getNextFridayDate();
+            document.getElementById("entryTimeStart").value = "09:30";
+            document.getElementById("entryTimeEnd").value = "11:00";
+            document.getElementById("exitTimeStart").value = "14:00";
+            document.getElementById("exitTimeEnd").value = "16:00";
+        }
+
+        // Call the function when the page loads
+        window.onload = function() {
+            setDefaultValues();
+        };
+    </script>
+</head>
+<body>
+    <h1>Long Straddle/Straddle Trade Simulation</h1>
+    <form method="post" action="/submit_options/"> <!-- Replace "/submit_options/" with your Django endpoint URL -->
+        <label for="ticker">Ticker:</label>
+        <input type="text" id="ticker" name="ticker" required autocomplete="off" oninput="this.value = this.value.toUpperCase()" value="AAPL">
+        <br><br>
+
+        <label for="tradeDate">Trade Date:</label>
+        <input type="date" id="tradeDate" name="tradeDate" required>
+        <br><br>
+
+        <table>
+            <tr>
+                <th>Contract 1</th>
+                <th>Contract 2</th>
+            </tr>
+            <tr>
+                <td style="text-align: center;">
+                    <label for="contractType1">Contract Type:</label>
+                    <select id="contractType1" name="contractType1" required>
+                        <option value="CALL">CALL</option>
+                        <option value="PUT">PUT</option>
+                    </select>
+                    <br><br>
+                    <label for="strike1">Strike Price:</label>
+                    <input type="number" id="strike1" name="strike1" step="1" required>
+                    <br><br>
+                    <label for="expiration1">Expiration Date:</label>
+                    <input type="date" id="expiration1" name="expiration1" required>
+                </td>
+                <td style="text-align: center;">
+                    <label for="contractType2">Contract Type:</label>
+                    <select id="contractType2" name="contractType2" required>
+                        <option value="CALL">CALL</option>
+                        <option value="PUT">PUT</option>
+                    </select>
+                    <br><br>
+                    <label for="strike2">Strike Price:</label>
+                    <input type="number" id="strike2" name="strike2" step="1" required>
+                    <br><br>
+                    <label for="expiration2">Expiration Date:</label>
+                    <input type="date" id="expiration2" name="expiration2" required>
+                </td>
+            </tr>
+        </table>
+
+        <br><br>
+
+        <label for="entryTimeStart">Trade Entry Time Start:</label>
+        <input type="time" id="entryTimeStart" name="entryTimeStart" required>
+        <br><br>
+
+        <label for="entryTimeEnd">Trade Entry Time End:</label>
+        <input type="time" id="entryTimeEnd" name="entryTimeEnd" required>
+        <br><br>
+
+        <label for="exitTimeStart">Trade Exit Time Start:</label>
+        <input type="time" id="exitTimeStart" name="exitTimeStart" required>
+        <br><br>
+
+        <label for="exitTimeEnd">Trade Exit Time End:</label>
+        <input type="time" id="exitTimeEnd" name="exitTimeEnd" required>
+        <br><br>
+
+    </form>
+
+<form method="post" action="/process_data/"> <!-- Replace "/process_data/" with your Django endpoint URL -->
+    <!-- Include other input fields -->
+
+    <button type="submit">Submit</button>
+</form>
+</body>
+</html>

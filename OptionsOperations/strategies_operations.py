@@ -1,6 +1,9 @@
+import math
+import statistics
+
 import options_contract_object as oc
 from naming_and_cleaning import *
-
+from OptionsOperations.__init__ import *
 
 class SingleOptionStrategy:
     def __init__(self, cleaned_data):
@@ -183,23 +186,37 @@ class MetaAnalysis:
     def profit_loss_percent_table(self):
         return [entry['profit_loss_percent'] for entry in self.simulation_data]
 
+    def create_data_frame(self):
+        nested_dict = {}
+        for item in self.simulation_data:
+            for key, value in item.items():
+                if key not in nested_dict:
+                    nested_dict[key] = [value]
+                else:
+                    nested_dict[key].append(value)
+        simulation_df = pd.DataFrame(nested_dict)
 
-contract1 = oc.OptionsContract("AAPL", 170, '2023-09-29', is_call=True)
+        return simulation_df
+
+
+contract1 = oc.OptionsContract("AAPL", 190, '2023-12-01', is_call=True)
 contract1data = oc.OptionsContractsPriceData(options_contract=contract1,
-                                             from_date='2023-09-28', to_date='2023-09-28',
+                                             from_date='2023-11-28', to_date='2023-11-28',
                                              window_start_time='09:30:00', window_end_time='16:30:00',
                                              timespan='minute')
 
-contract2 = oc.OptionsContract("AAPL", 170, '2023-09-29', is_call=False)
+contract2 = oc.OptionsContract("AAPL", 190, '2023-12-01', is_call=False)
 contract2data = oc.OptionsContractsPriceData(options_contract=contract1,
-                                             from_date='2023-09-28', to_date='2023-09-28',
+                                             from_date='2023-11-28', to_date='2023-11-28',
                                              window_start_time='09:30:00', window_end_time='16:30:00',
                                              timespan='minute')
 
 simulation = TwoOptionStrategy(contract1data.pull_options_price_data(), contract2data.pull_options_price_data())
-x = simulation.long_strangle_simulation(entry_window_start='2023-09-28 09:30:00',
-                                        entry_window_end='2023-09-28 11:30:00',
-                                        exit_window_start='2023-09-28 11:30:00', exit_window_end='2023-09-28 14:30:00')
+long_straddle_example = simulation.long_strangle_simulation(entry_window_start='2023-11-28 09:30:00',
+                                                            entry_window_end='2023-11-28 11:30:00',
+                                                            exit_window_start='2023-11-28 14:30:00',
+                                                            exit_window_end='2023-11-28 16:00:00')
 
-
-
+meta_long_straddle_example = MetaAnalysis(simulation_data=long_straddle_example)
+excel_ready_data = meta_long_straddle_example.create_data_frame()
+save_to_excel(excel_ready_data)
