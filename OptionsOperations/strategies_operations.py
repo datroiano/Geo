@@ -5,6 +5,7 @@ import options_contract_object as oc
 from naming_and_cleaning import *
 from OptionsOperations.__init__ import *
 
+
 class SingleOptionStrategy:
     def __init__(self, cleaned_data):
         self.cleaned_data = cleaned_data
@@ -198,11 +199,11 @@ class MetaAnalysis:
 
         return simulation_df
 
-
-ticker = 'AMZN'
-trade_date = '2023-10-26'
-expirations = '2023-10-27'
-strike1 = 121
+# eventual form inputs for excel creation
+ticker = 'CRM'
+trade_date = '2023-11-29'
+expirations = '2023-12-01'
+strike1 = 250
 strike2 = strike1
 
 contract1 = oc.OptionsContract(ticker, strike1, expirations, is_call=True)
