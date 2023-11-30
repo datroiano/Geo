@@ -1,5 +1,4 @@
 import statistics
-
 from OptionsOperations.__init__ import *
 from OptionsOperations.naming_and_cleaning import *
 
@@ -17,6 +16,9 @@ class TestCompanies:
 
         # Make initial Polygon request to retrieve average price
         self.price_averages = self.polygon_retrieval(avg_time_start="09:30:00", avg_time_end="11:00:00")
+
+        # Make secondary Polygon request to retrieve and sort option chains, choosing target strike
+        self.correct_strikes = self.option_chain_retrieval()
 
     def finnhub_retrieval(self):
         finnhub_client = finnhub.Client(api_key="ck45p3hr01qus81pq4u0ck45p3hr01qus81pq4ug")
@@ -85,40 +87,49 @@ class TestCompanies:
 
                 new_entry = {
                     'symbol': ticker,
-                    'avg_price': round(statistics.mean(raw_prices), ndigits=2)
+                    'avg_price': round(statistics.mean(raw_prices), ndigits=2),
+                    'date': from_date
                 }
 
                 price_averages.append(new_entry)
 
                 i += 1
-                if i >= 4:
+                if i >= 5:
                     break
 
         return price_averages
 
+    def option_chain_retrieval(self, polygon_api_key='r1Jqp6JzYYhbt9ak10x9zOpoj1bf58Zz'):
+        correct_strikes = []
+        headers = {
+            "Authorization": f"Bearer {polygon_api_key}"
+        }
+        data_limit = 250
+
+        print(f'Ticker Count: {len(self.price_averages)}')
+
+        for item in self.price_averages:
+            ticker = item["symbol"]
+            endpoint = f"https://api.polygon.io/v3/snapshot/options/{ticker}?limit={data_limit}"
+
+            response = requests.get(endpoint, headers=headers).json()
+
+            raw_strikes = []
+            for chain in response['results']:
+                raw_strikes.append(chain['details']['strike_price'])
+
+            new_entry = {
+                'symbol': ticker,
+                'target_strike': closest_number(numbers_set=raw_strikes, target=item["avg_price"]),
+                'date': item['date'],
+                'target_expiration_date': next_friday(item['date'])
+            }
+            correct_strikes.append(new_entry)
+
+        return correct_strikes
 
 
+# SAMPLE USAGE
+# simulation1 = TestCompanies(min_revenue=1000000000, from_date="2023-11-01", to_date="2023-11-29", report_hour="amc")
+# print(simulation1.correct_strikes)
 
-
-x = TestCompanies(min_revenue=1000000000, from_date="2023-11-01", to_date="2023-11-29", report_hour="amc")
-print(x.price_averages)
-
-
-# url = "https://api.tdameritrade.com/v1/marketdata/chains"
-#
-# api_key = '50KAT7SOS174SYNEXYD1EFS9GDUOMVGX'
-#
-# symbol = 'AAPL'
-#
-# query_params = {
-#     'apikey': api_key,
-#     'symbol': symbol,
-#     'strikeCount': 2,
-# }
-#
-# response = requests.get(url, params=query_params)
-#
-# if response.status_code == 200:
-#     print(response.json())
-# else:
-#     print("Error:", response.status_code, response.text)

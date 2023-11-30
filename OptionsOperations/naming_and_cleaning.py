@@ -136,10 +136,30 @@ def from_unix_time(unix_time_str):
 # formatted_datetime = from_unix_time('1694338500000')
 
 
-def next_friday():
-    today = date.today()
+def next_friday(input_date=None):
+    if input_date is None:
+        today = date.today()
+    else:
+        today = datetime.strptime(input_date, '%Y-%m-%d').date()
+
     days_until_friday = (4 - today.weekday()) % 7   # Calculate days until next Friday (0=Monday, 1=Tuesday)
     if days_until_friday == 0:
         days_until_friday = 7  # If today is Friday, move to next Friday
     next_friday_date = today + timedelta(days=days_until_friday)
-    return next_friday_date
+
+    # Format the date as 'YYYY-MM-DD'
+    formatted_date = next_friday_date.strftime('%Y-%m-%d')
+    return formatted_date
+
+
+def closest_number(numbers_set, target):
+    closest = None
+    min_difference = float('inf')
+
+    for number in numbers_set:
+        difference = abs(number - target)
+        if difference < min_difference:
+            min_difference = difference
+            closest = number
+
+    return closest
