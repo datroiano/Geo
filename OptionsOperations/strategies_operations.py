@@ -229,6 +229,6 @@ average_return = statistics.mean(meta_long_straddle_example.profit_loss_percent_
 standard_deviation_return = statistics.stdev(meta_long_straddle_example.profit_loss_percent_table())
 excel_ready_data = meta_long_straddle_example.create_data_frame()
 
-save_to_excel(excel_ready_data, avg_return=average_return, std_dev=standard_deviation_return)
-open_recent_download()
+# save_to_excel(excel_ready_data, avg_return=average_return, std_dev=standard_deviation_return)
+# open_recent_download()
 
