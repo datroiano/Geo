@@ -1,15 +1,15 @@
 import statistics
-from OptionsOperations.__init__ import *
 from OptionsOperations.naming_and_cleaning import *
 
 
 class TestCompanies:
-    def __init__(self, min_revenue, from_date, to_date, report_hour="amc", underlying_ticker=""):
+    def __init__(self, min_revenue, from_date, to_date, report_hour="amc", underlying_ticker="", max_companies=1):
         self.min_revenue = int(min_revenue)
         self.from_date = from_date
         self.to_date = to_date
         self.underlying_ticker = underlying_ticker
         self.report_hour = report_hour
+        self.max_companies = max_companies
 
         # Make finnhub client request to retrieve tickers, report dates, and time period
         self.symbols_list = self.finnhub_retrieval()
@@ -94,7 +94,7 @@ class TestCompanies:
                 price_averages.append(new_entry)
 
                 i += 1
-                if i >= 5:
+                if i >= self.max_companies:
                     break
 
         return price_averages

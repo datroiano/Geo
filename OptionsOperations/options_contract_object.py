@@ -1,4 +1,3 @@
-from OptionsOperations.__init__ import *
 from OptionsOperations.naming_and_cleaning import *
 
 

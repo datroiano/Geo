@@ -199,36 +199,80 @@ class MetaAnalysis:
 
         return simulation_df
 
-# eventual form inputs for excel creation
-ticker = 'CRM'
-trade_date = '2023-11-29'
-expirations = '2023-12-01'
-strike1 = 250
-strike2 = strike1
 
-contract1 = oc.OptionsContract(ticker, strike1, expirations, is_call=True)
-contract1data = oc.OptionsContractsPriceData(options_contract=contract1,
-                                             from_date=trade_date, to_date=trade_date,
-                                             window_start_time='09:30:00', window_end_time='16:30:00',
-                                             timespan='minute')
+# eventual form inputs for EXCEL creation
+# ticker = 'CRM'
+# trade_date = '2023-11-29'
+# expirations = '2023-12-01'
+# strike1 = 250
+# strike2 = strike1
+#
+# contract1 = oc.OptionsContract(ticker, strike1, expirations, is_call=True)
+# contract1data = oc.OptionsContractsPriceData(options_contract=contract1,
+#                                              from_date=trade_date, to_date=trade_date,
+#                                              window_start_time='09:30:00', window_end_time='16:30:00',
+#                                              timespan='minute')
+#
+# contract2 = oc.OptionsContract(ticker, strike2, expirations, is_call=False)
+# contract2data = oc.OptionsContractsPriceData(options_contract=contract1,
+#                                              from_date=trade_date, to_date=trade_date,
+#                                              window_start_time='09:30:00', window_end_time='16:30:00',
+#                                              timespan='minute')
+#
+# simulation = TwoOptionStrategy(contract1data.pull_options_price_data(), contract2data.pull_options_price_data())
+# long_straddle_example = simulation.long_strangle_simulation(entry_window_start=f'{trade_date} 09:30:00',
+#                                                             entry_window_end=f'{trade_date} 11:30:00',
+#                                                             exit_window_start=f'{trade_date} 14:30:00',
+#                                                             exit_window_end=f'{trade_date} 16:00:00')
+#
+# meta_long_straddle_example = MetaAnalysis(simulation_data=long_straddle_example)
+# average_return = statistics.mean(meta_long_straddle_example.profit_loss_percent_table())
+# standard_deviation_return = statistics.stdev(meta_long_straddle_example.profit_loss_percent_table())
+# excel_ready_data = meta_long_straddle_example.create_data_frame()
 
-contract2 = oc.OptionsContract(ticker, strike2, expirations, is_call=False)
-contract2data = oc.OptionsContractsPriceData(options_contract=contract1,
-                                             from_date=trade_date, to_date=trade_date,
-                                             window_start_time='09:30:00', window_end_time='16:30:00',
-                                             timespan='minute')
-
-simulation = TwoOptionStrategy(contract1data.pull_options_price_data(), contract2data.pull_options_price_data())
-long_straddle_example = simulation.long_strangle_simulation(entry_window_start=f'{trade_date} 09:30:00',
-                                                            entry_window_end=f'{trade_date} 11:30:00',
-                                                            exit_window_start=f'{trade_date} 14:30:00',
-                                                            exit_window_end=f'{trade_date} 16:00:00')
-
-meta_long_straddle_example = MetaAnalysis(simulation_data=long_straddle_example)
-average_return = statistics.mean(meta_long_straddle_example.profit_loss_percent_table())
-standard_deviation_return = statistics.stdev(meta_long_straddle_example.profit_loss_percent_table())
-excel_ready_data = meta_long_straddle_example.create_data_frame()
 
 # save_to_excel(excel_ready_data, avg_return=average_return, std_dev=standard_deviation_return)
 # open_recent_download()
 
+
+def master_callable_inputs_outputs(corrected_strikes, entry_start, entry_end, exit_start, exit_end):
+    master_out = []
+    print(len(corrected_strikes))
+    i = 0
+    for item in corrected_strikes:
+        ticker = item['symbol']
+        strike1 = item['target_strike']
+        strike2 = item['target_strike']
+        expirations = item['target_expiration_date']
+        trade_date = item['date']
+
+        contract1 = oc.OptionsContract(ticker, strike1, expirations, is_call=True)
+        contract1data = oc.OptionsContractsPriceData(options_contract=contract1,
+                                                     from_date=trade_date, to_date=trade_date,
+                                                     window_start_time='09:30:00', window_end_time='16:30:00',
+                                                     timespan='minute')
+
+        contract2 = oc.OptionsContract(ticker, strike2, expirations, is_call=False)
+        contract2data = oc.OptionsContractsPriceData(options_contract=contract2,
+                                                     from_date=trade_date, to_date=trade_date,
+                                                     window_start_time='09:30:00', window_end_time='16:30:00',
+                                                     timespan='minute')
+
+        simulation = TwoOptionStrategy(contract1data.pull_options_price_data(), contract2data.pull_options_price_data())
+        long_straddle = simulation.long_strangle_simulation(entry_window_start=f'{trade_date} {entry_start}',
+                                                            entry_window_end=f'{trade_date} {entry_end}',
+                                                            exit_window_start=f'{trade_date} {exit_start}',
+                                                            exit_window_end=f'{trade_date} {exit_end}')
+
+        new_entry = {f'sim{i+1}': long_straddle}
+        master_out.append(new_entry)
+
+        i += 1
+
+    return master_out
+
+
+test_corrected_strikes = [{'symbol': 'CRM', 'target_strike': 230, 'date': '2023-11-29', 'target_expiration_date': '2023-12-01'}, {'symbol': 'HPQ', 'target_strike': 28, 'date': '2023-11-21', 'target_expiration_date': '2023-11-24'}]
+
+master_callable_inputs_outputs(test_corrected_strikes, entry_start='09:30:00', entry_end='11:00:00',
+                               exit_start="14:00:00", exit_end="15:59:00")
