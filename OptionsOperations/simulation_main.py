@@ -1,4 +1,5 @@
 from OptionsOperations.earnings_calendar_pulls import *
+from OptionsOperations.strategies_operations import *
 
 # USER DOCUMENTATION AVAILABLE IN ALTERNATE FILE
 # USER INTERFACE - FUTURE PORTION OF PROJECT
@@ -9,7 +10,7 @@ MinimumRevenue = 5000000000
 PeriodDateStart = '2023-11-01'
 PeriodDateEnd = '2023-11-29'
 ReportHourType = 'amc'
-MaxCompaniesReported = 3
+MaxCompaniesReported = 1
 
 EnterTradingPeriodStart = '09:30:00'
 EnterTradingPeriodEnd = '11:30:00'
@@ -25,5 +26,5 @@ print(user_input_simulation.correct_strikes)
 # viewable = master_callable_inputs_outputs(corrected_strikes=user_input_simulation.correct_strikes,
 #                                           entry_start=EnterTradingPeriodStart, entry_end=EnterTradingPeriodEnd,
 #                                           exit_start=ExitTradingPeriodStart, exit_end=ExitTradingPeriodEnd)
-
-
+#
+# print(viewable)

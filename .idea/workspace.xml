@@ -5,10 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9ec2a096-cc25-4021-83ad-c171cb77a001" name="Changes" comment="init">
-      <change afterPath="$PROJECT_DIR$/OptionsOperations/simulation_main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/Geo.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/Geo.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/OptionsOperations/earnings_calendar_pulls.py" beforeDir="false" afterPath="$PROJECT_DIR$/OptionsOperations/earnings_calendar_pulls.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OptionsOperations/options_contract_object.py" beforeDir="false" afterPath="$PROJECT_DIR$/OptionsOperations/options_contract_object.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/OptionsOperations/strategies_operations.py" beforeDir="false" afterPath="$PROJECT_DIR$/OptionsOperations/strategies_operations.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -128,6 +128,8 @@
       <workItem from="1698683990769" duration="930000" />
       <workItem from="1701296218839" duration="4559000" />
       <workItem from="1701316394071" duration="1704000" />
+      <workItem from="1701409147591" duration="15000" />
+      <workItem from="1701409452596" duration="380000" />
     </task>
     <task id="LOCAL-00001" summary="init">
       <created>1695851824882</created>
@@ -294,5 +296,16 @@
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
     <MESSAGE value="init" />
     <option name="LAST_COMMIT_MESSAGE" value="init" />
+  </component>
+  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/Geo$strategies.coverage" NAME="strategies Coverage Results" MODIFIED="1696025352786" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/OptionsOperations" />
+    <SUITE FILE_PATH="coverage/Geo$options_contract_object.coverage" NAME="options_contract_object Coverage Results" MODIFIED="1696391931160" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/OptionsOperations" />
+    <SUITE FILE_PATH="coverage/Geo$excel_functions.coverage" NAME="excel_functions Coverage Results" MODIFIED="1701292748071" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/OptionsOperations" />
+    <SUITE FILE_PATH="coverage/Geo$earnings_calendar_pulls.coverage" NAME="earnings_calendar_pulls Coverage Results" MODIFIED="1701371944552" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/OptionsOperations" />
+    <SUITE FILE_PATH="coverage/Geo$simulation_main.coverage" NAME="simulation_main Coverage Results" MODIFIED="1701409760870" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/OptionsOperations" />
+    <SUITE FILE_PATH="coverage/Geo$strategies_operations.coverage" NAME="strategies_operations Coverage Results" MODIFIED="1701409831282" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/OptionsOperations" />
+    <SUITE FILE_PATH="coverage/Geo$main_UI_class.coverage" NAME="main_UI_class Coverage Results" MODIFIED="1701406191180" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/UserInterface" />
+    <SUITE FILE_PATH="coverage/Geo$main.coverage" NAME="main Coverage Results" MODIFIED="1696991489498" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/Geo$chat_gpt_call.coverage" NAME="chat_gpt_call Coverage Results" MODIFIED="1701293778260" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>

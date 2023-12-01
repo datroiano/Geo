@@ -14,7 +14,7 @@ class TestCompanies:
         # Make finnhub client request to retrieve tickers, report dates, and time period
         self.symbols_list = self.finnhub_retrieval()
 
-        # Make initial Polygon request to retrieve average price
+        # Make initial Polygon request to retrieve average prdeeice
         self.price_averages = self.polygon_retrieval(avg_time_start="09:30:00", avg_time_end="11:00:00")
 
         # Make secondary Polygon request to retrieve and sort option chains, choosing target strike
