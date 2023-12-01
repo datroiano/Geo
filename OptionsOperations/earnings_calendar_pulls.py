@@ -67,19 +67,24 @@ class TestCompanies:
                 response = requests.get(endpoint, headers=headers).json()
 
                 processed_data = []
-                for result in response['results']:
-                    if int(to_unix_time(f'{from_date} {avg_time_start}')) <= int(result['t']) <= int(to_unix_time(f'{to_date} {avg_time_end}')):
-                        ticker = response['ticker']
-                        time = from_unix_time(result['t'])
-                        high = result['h']
-                        low = result['l']
+                try:
+                    for result in response['results']:
+                        if (int(to_unix_time(f'{from_date} {avg_time_start}')) <= int(result['t']) <=
+                                int(to_unix_time(f'{to_date} {avg_time_end}'))):
+                            ticker = response['ticker']
+                            time = from_unix_time(result['t'])
+                            high = result['h']
+                            low = result['l']
 
-                        processed_data.append({
-                            'ticker': ticker,
-                            'date': time,
-                            'high': high,
-                            'low': low
-                        })
+                            processed_data.append({
+                                'ticker': ticker,
+                                'date': time,
+                                'high': high,
+                                'low': low
+                            })
+                except KeyError:
+                    print("Cool down on Polygon Stock API calls. Wait 1 minute.")
+                    break
 
                 raw_prices = []
                 for data_point in processed_data:
@@ -104,9 +109,9 @@ class TestCompanies:
         headers = {
             "Authorization": f"Bearer {polygon_api_key}"
         }
-        data_limit = 250
+        data_limit = 50  # SETTINGS
 
-        print(f'Ticker Count: {len(self.price_averages)}')
+        # print(f'Ticker Count for Option Chain Retrieval: {len(self.price_averages)}')  # Reference only
 
         for item in self.price_averages:
             ticker = item["symbol"]
@@ -122,7 +127,8 @@ class TestCompanies:
                 'symbol': ticker,
                 'target_strike': closest_number(numbers_set=raw_strikes, target=item["avg_price"]),
                 'date': item['date'],
-                'target_expiration_date': next_friday(item['date'])
+                'target_expiration_date': next_friday(item['date']),
+                'strikes_iterated': len(raw_strikes)
             }
             correct_strikes.append(new_entry)
 
@@ -130,6 +136,7 @@ class TestCompanies:
 
 
 # SAMPLE USAGE
-# simulation1 = TestCompanies(min_revenue=1000000000, from_date="2023-11-01", to_date="2023-11-29", report_hour="amc")
-# print(simulation1.correct_strikes)
+# simulation = TestCompanies(min_revenue=1_000_000_000, from_date="2023-11-01", to_date="2023-11-29", report_hour="amc")
+# print(simulation.correct_strikes)  # - which is in the format: [{'symbol': 'SNPS', 'target_strike': 550,
+# 'date': '2023-11-29', 'target_expiration_date': '2023-12-01'}]
 

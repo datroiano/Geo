@@ -20,3 +20,19 @@ def raw_data_pdf(cleaned_response):
     doc.build(content)
     print(f"PDF saved as {pdf_filename}")
     subprocess.Popen(["start", "", pdf_filename], shell=True)
+
+
+def write_dict_to_pdf(data, line_height=8, font_size=10):
+
+    pdf = FPDF()
+    pdf.add_page()
+
+    pdf.set_font("Arial", size=font_size)
+
+    json_str = json.dumps(data, indent=4)  # Convert the dictionary to a nicely formatted JSON string
+
+    pdf.multi_cell(0, h=line_height, txt=json_str)  # Use multi_cell() for handling larger text
+
+    download_folder = os.path.join(os.path.expanduser('~'), 'Downloads')
+    output_path = os.path.join(download_folder, 'data_as_pdf.pdf')
+    pdf.output(output_path)
