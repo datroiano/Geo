@@ -54,7 +54,9 @@ class TestCompanies:
         multiplier = "1"
         timespan = "minute"
 
+        j = 0
         for item in self.symbols_list:
+            j += 1
             if item["date"] is None or item["symbol"] is None:
                 continue
             else:
@@ -83,7 +85,7 @@ class TestCompanies:
                                 'low': low
                             })
                 except KeyError:
-                    print("Cool down on Polygon Stock API calls. Wait 1 minute.")
+                    print(f"Cool down on Polygon Stock API calls. Wait 1 minute. Iteration fail: {j}")
                     break
 
                 raw_prices = []
@@ -109,7 +111,7 @@ class TestCompanies:
         headers = {
             "Authorization": f"Bearer {polygon_api_key}"
         }
-        data_limit = 50  # SETTINGS
+        data_limit = 40  # SETTINGS
 
         # print(f'Ticker Count for Option Chain Retrieval: {len(self.price_averages)}')  # Reference only
 
