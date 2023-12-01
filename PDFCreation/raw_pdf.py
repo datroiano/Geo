@@ -22,12 +22,15 @@ def raw_data_pdf(cleaned_response):
     subprocess.Popen(["start", "", pdf_filename], shell=True)
 
 
-def write_dict_to_pdf(data, line_height=8, font_size=10):
-
+def write_dict_to_pdf(data, line_height=8, font_size=10, title="Simulation Results"):
     pdf = FPDF()
     pdf.add_page()
 
-    pdf.set_font("Arial", size=font_size)
+    pdf.set_font("Arial", size=15)  # Set font for the title
+    pdf.set_xy(0, 10)  # Position the title at coordinates (0, 10)
+    pdf.cell(210, 10, txt=title, ln=True, align='C')  # Centered title
+
+    pdf.set_font("Arial", size=font_size)  # Set font for the dictionary content
 
     json_str = json.dumps(data, indent=4)  # Convert the dictionary to a nicely formatted JSON string
 

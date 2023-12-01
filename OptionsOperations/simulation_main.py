@@ -8,11 +8,11 @@ from OptionsOperations.excel_functions import open_recent_download
 
 # ------------------------------------------------------------------------------------------------------------------- #
 #                                   Company Screening Inputs (Multi-Company Report)                                   #
-MinimumRevenue = 4000000000
-PeriodDateStart = '2023-11-01'
+MinimumRevenue = 100000000
+PeriodDateStart = '2023-11-01'  # Must remain without 1 month previous, until $75 per month subscription is paid
 PeriodDateEnd = '2023-11-30'
 ReportHourType = 'amc'
-MaxCompaniesReported = 5
+MaxCompaniesReported = 2  # Must remain at 5 until Polygon stock API is paid for $25. Can be expended to the hundreds+
 
 EnterTradingPeriodStart = '09:30:00'
 EnterTradingPeriodEnd = '11:30:00'
