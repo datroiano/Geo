@@ -12,7 +12,7 @@ MinimumRevenue = 5_000_000_000
 PeriodDateStart = '2023-11-01'  # Must remain without 1 month previous, until $75 per month subscription is paid
 PeriodDateEnd = '2023-11-30'
 ReportHourType = 'amc'
-MaxCompaniesReported = 6  # Must remain at 5 until Polygon stock API is paid for $25. Can be expended to the hundreds+
+MaxCompaniesReported = 4  # Must remain at 5 until Polygon stock API is paid for $25. Can be expended to the hundreds+
 
 EnterTradingPeriodStart = '09:30:00'
 EnterTradingPeriodEnd = '11:30:00'
@@ -29,5 +29,5 @@ viewable = master_callable_inputs_outputs(corrected_strikes=user_input_simulatio
                                           entry_start=EnterTradingPeriodStart, entry_end=EnterTradingPeriodEnd,
                                           exit_start=ExitTradingPeriodStart, exit_end=ExitTradingPeriodEnd)
 
-pdf = write_dict_to_pdf(viewable[4])
+pdf = write_dict_to_pdf(viewable)
 open_recent_download()

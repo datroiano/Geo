@@ -202,9 +202,12 @@ class MetaAnalysis:
 
 def master_callable_inputs_outputs(corrected_strikes, entry_start, entry_end, exit_start, exit_end):
     master_out = []
+    print(f'Length of Entries Dictionary: {len(corrected_strikes)}')
     i = 0
     for item in corrected_strikes:
         if len(item) == 0:
+            i += 1
+            print(f"Iteration Skipped (Data Not Available or Usable): {i}")
             continue
         else:
             ticker = item['symbol']
