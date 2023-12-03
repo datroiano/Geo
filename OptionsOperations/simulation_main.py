@@ -12,7 +12,8 @@ MinimumRevenue = 5_000_000_000
 PeriodDateStart = '2023-11-01'  # Must remain without 1 month previous, until $75 per month subscription is paid
 PeriodDateEnd = '2023-11-30'
 ReportHourType = 'amc'
-MaxCompaniesReported = 4  # Must remain at 5 until Polygon stock API is paid for $25. Can be expended to the hundreds+
+MaxCompaniesReported = 5  # Must remain at 5 until Polygon stock API is paid for $25. Can be expended to the hundreds+
+TickerPairingSize = 50  # Determines how many options are searched via option chain lookup
 
 EnterTradingPeriodStart = '09:30:00'
 EnterTradingPeriodEnd = '11:30:00'
@@ -22,12 +23,13 @@ ExitTradingPeriodEnd = '15:59:00'
 
 # COMBINED LOGIC
 user_input_simulation = TestCompanies(min_revenue=MinimumRevenue, from_date=PeriodDateStart, to_date=PeriodDateEnd,
-                                      report_hour=ReportHourType, max_companies=MaxCompaniesReported)
+                                      report_hour=ReportHourType, max_companies=MaxCompaniesReported,
+                                      data_limit=TickerPairingSize)
 
 
 viewable = master_callable_inputs_outputs(corrected_strikes=user_input_simulation.correct_strikes,
                                           entry_start=EnterTradingPeriodStart, entry_end=EnterTradingPeriodEnd,
                                           exit_start=ExitTradingPeriodStart, exit_end=ExitTradingPeriodEnd)
 
-pdf = write_dict_to_pdf(viewable)
+write_dict_to_pdf(viewable)
 open_recent_download()

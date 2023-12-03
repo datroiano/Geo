@@ -3,22 +3,23 @@ from OptionsOperations.naming_and_cleaning import *
 
 
 class TestCompanies:
-    def __init__(self, min_revenue, from_date, to_date, report_hour="amc", underlying_ticker="", max_companies=1):
+    def __init__(self, min_revenue, from_date, to_date, data_limit, report_hour="amc", underlying_ticker="", max_companies=1):
         self.min_revenue = int(min_revenue)
         self.from_date = from_date
         self.to_date = to_date
         self.underlying_ticker = underlying_ticker
         self.report_hour = report_hour
         self.max_companies = max_companies
+        self.data_limit = data_limit
 
         # Make finnhub client request to retrieve tickers, report dates, and time period
         self.symbols_list = self.finnhub_retrieval()
 
-        # Make initial Polygon request to retrieve average prdeeice
+        # Make initial Polygon request to retrieve average price
         self.price_averages = self.polygon_retrieval(avg_time_start="09:30:00", avg_time_end="11:00:00")
 
         # Make secondary Polygon request to retrieve and sort option chains, choosing target strike
-        self.correct_strikes = self.option_chain_retrieval()
+        self.correct_strikes = self.option_chain_retrieval(data_limit=self.data_limit)
 
     def finnhub_retrieval(self):
         finnhub_client = finnhub.Client(api_key="ck45p3hr01qus81pq4u0ck45p3hr01qus81pq4ug")
@@ -101,17 +102,17 @@ class TestCompanies:
                 price_averages.append(new_entry)
 
                 i += 1
+                print(f'Stock Price Iteration Pass: {i}')
                 if i >= self.max_companies:
                     break
 
         return price_averages
 
-    def option_chain_retrieval(self, polygon_api_key='r1Jqp6JzYYhbt9ak10x9zOpoj1bf58Zz'):
+    def option_chain_retrieval(self, data_limit, polygon_api_key='r1Jqp6JzYYhbt9ak10x9zOpoj1bf58Zz'):
         correct_strikes = []
         headers = {
             "Authorization": f"Bearer {polygon_api_key}"
         }
-        data_limit = 40  # SETTINGS
 
         # print(f'Ticker Count for Option Chain Retrieval: {len(self.price_averages)}')  # Reference only
 

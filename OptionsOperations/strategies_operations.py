@@ -202,11 +202,12 @@ class MetaAnalysis:
 
 def master_callable_inputs_outputs(corrected_strikes, entry_start, entry_end, exit_start, exit_end):
     master_out = []
+    print(f'Entries: {corrected_strikes}')
     print(f'Length of Entries Dictionary: {len(corrected_strikes)}')
     i = 0
     for item in corrected_strikes:
+        i += 1
         if len(item) == 0:
-            i += 1
             print(f"Iteration Skipped (Data Not Available or Usable): {i}")
             continue
         else:
@@ -222,6 +223,7 @@ def master_callable_inputs_outputs(corrected_strikes, entry_start, entry_end, ex
                                                              window_start_time='09:30:00', window_end_time='16:30:00',
                                                              timespan='minute')
             except:
+                print(f'Iteration {i} Skipped - Option Contract 1 Fail ({ticker})')
                 continue
 
             try:
@@ -231,6 +233,7 @@ def master_callable_inputs_outputs(corrected_strikes, entry_start, entry_end, ex
                                                              window_start_time='09:30:00', window_end_time='16:30:00',
                                                              timespan='minute')
             except:
+                print(f'Iteration {i} Skipped - Option Contract 2 Fail ({ticker})')
                 continue
 
             try:
@@ -240,17 +243,21 @@ def master_callable_inputs_outputs(corrected_strikes, entry_start, entry_end, ex
                                                                     exit_window_start=f'{trade_date} {exit_start}',
                                                                     exit_window_end=f'{trade_date} {exit_end}')
             except:
+                print(f'Iteration {i} Skipped - Combined Data Error ({ticker})')
                 continue
 
             new_entry = {'ticker': ticker,
                          'strike_price': strike1,
                          'expiration_date': expirations,
                          'trade_date': trade_date,
-                         f'sim{i+1}': long_straddle}
+                         f'sim{i}': long_straddle}
 
-            master_out.append(new_entry)
-
-            i += 1
+            if len(long_straddle) == 0:
+                print(f'Iteration {i} Skipped - Simulation Fail ({ticker})')
+                continue
+            else:
+                master_out.append(new_entry)
+                print(ticker)
 
     return master_out
 
