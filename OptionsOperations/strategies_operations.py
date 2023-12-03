@@ -205,6 +205,7 @@ def master_callable_inputs_outputs(corrected_strikes, entry_start, entry_end, ex
     print(f'Entries: {corrected_strikes}')
     print(f'Length of Entries Dictionary: {len(corrected_strikes)}')
     i = 0
+    j = 0
     for item in corrected_strikes:
         i += 1
         if len(item) == 0:
@@ -246,11 +247,12 @@ def master_callable_inputs_outputs(corrected_strikes, entry_start, entry_end, ex
                 print(f'Iteration {i} Skipped - Combined Data Error ({ticker})')
                 continue
 
+            j += 1
             new_entry = {'ticker': ticker,
                          'strike_price': strike1,
                          'expiration_date': expirations,
                          'trade_date': trade_date,
-                         f'sim{i}': long_straddle}
+                         f'sim{j}': long_straddle}
 
             if len(long_straddle) == 0:
                 print(f'Iteration {i} Skipped - Simulation Fail ({ticker})')
