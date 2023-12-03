@@ -202,8 +202,12 @@ class MetaAnalysis:
 
 def master_callable_inputs_outputs(corrected_strikes, entry_start, entry_end, exit_start, exit_end):
     master_out = []
-    print(f'Entries: {corrected_strikes}')
     print(f'Length of Entries Dictionary: {len(corrected_strikes)}')
+    print(f'Attempted Entries:')
+    for tick in corrected_strikes:
+        print(tick['symbol'])
+    print(f'Iterated Entries:')
+
     i = 0
     j = 0
     for item in corrected_strikes:
@@ -224,8 +228,16 @@ def master_callable_inputs_outputs(corrected_strikes, entry_start, entry_end, ex
                                                              window_start_time='09:30:00', window_end_time='16:30:00',
                                                              timespan='minute')
             except:
-                print(f'Iteration {i} Skipped - Option Contract 1 Fail ({ticker})')
-                continue
+                try:  # First if error check will change the friday from non-standard to standard expiry
+                    contract1 = oc.OptionsContract(ticker, strike1, next_third_friday(expirations), is_call=True)
+                    contract1data = oc.OptionsContractsPriceData(options_contract=contract1,
+                                                                 from_date=trade_date, to_date=trade_date,
+                                                                 window_start_time='09:30:00',
+                                                                 window_end_time='16:30:00',
+                                                                 timespan='minute')
+                except:
+                    print(f'Iteration {i} Skipped - Option Contract 1 Fail ({ticker})')
+                    continue
 
             try:
                 contract2 = oc.OptionsContract(ticker, strike2, expirations, is_call=False)
@@ -234,8 +246,16 @@ def master_callable_inputs_outputs(corrected_strikes, entry_start, entry_end, ex
                                                              window_start_time='09:30:00', window_end_time='16:30:00',
                                                              timespan='minute')
             except:
-                print(f'Iteration {i} Skipped - Option Contract 2 Fail ({ticker})')
-                continue
+                try:  # First if error check will change the friday from non-standard to standard expiry
+                    contract2 = oc.OptionsContract(ticker, strike2, next_third_friday(expirations), is_call=False)
+                    contract2data = oc.OptionsContractsPriceData(options_contract=contract2,
+                                                                 from_date=trade_date, to_date=trade_date,
+                                                                 window_start_time='09:30:00',
+                                                                 window_end_time='16:30:00',
+                                                                 timespan='minute')
+                except:
+                    print(f'Iteration {i} Skipped - Option Contract 2 Fail ({ticker})')
+                    continue
 
             try:
                 simulation = TwoOptionStrategy(contract1data.pull_options_price_data(), contract2data.pull_options_price_data())
@@ -259,7 +279,7 @@ def master_callable_inputs_outputs(corrected_strikes, entry_start, entry_end, ex
                 continue
             else:
                 master_out.append(new_entry)
-                print(ticker)
+                print(f'{ticker} (ITERATIONS PASSED)')
 
     return master_out
 

@@ -152,6 +152,25 @@ def next_friday(input_date=None):
     return formatted_date
 
 
+def next_third_friday(input_date):
+    date_obj = datetime.strptime(input_date, '%Y-%m-%d')
+    day_of_week = date_obj.weekday()
+    days_until_friday = (4 - day_of_week) % 7
+    first_friday = date_obj + timedelta(days=days_until_friday)
+    third_friday = first_friday + timedelta(weeks=2)
+
+    if third_friday.month != date_obj.month:
+        next_month = date_obj.replace(day=1) + timedelta(days=32)
+        third_friday = next_month.replace(day=1)
+
+        while third_friday.weekday() != 4:
+            third_friday += timedelta(days=1)
+
+        third_friday += timedelta(weeks=2)
+
+    return third_friday.strftime('%Y-%m-%d')
+
+
 def closest_number(numbers_set, target):
     closest = None
     min_difference = float('inf')

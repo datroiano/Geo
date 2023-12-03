@@ -8,17 +8,19 @@ from OptionsOperations.excel_functions import open_recent_download
 
 # ------------------------------------------------------------------------------------------------------------------- #
 #                                   Company Screening Inputs (Multi-Company Report)                                   #
-MinimumRevenue = 5_000_000_000
-PeriodDateStart = '2023-11-01'  # Must remain without 1 month previous, until $75 per month subscription is paid
-PeriodDateEnd = '2023-11-30'
+MinimumRevenue = 5_500_000_000
+PeriodDateStart = '2023-11-03'  # Must remain without 1 month previous, until $75 per month subscription is paid
+PeriodDateEnd = '2023-11-11'
 ReportHourType = 'amc'
 MaxCompaniesReported = 5  # Must remain at 5 until Polygon stock API is paid for $25. Can be expended to the hundreds+
 TickerPairingSize = 50  # Determines how many options are searched via option chain lookup
 
 EnterTradingPeriodStart = '09:30:00'
 EnterTradingPeriodEnd = '11:30:00'
-ExitTradingPeriodStart = '14:30:00'
+ExitTradingPeriodStart = '11:31:00'
 ExitTradingPeriodEnd = '15:59:00'
+
+ReportLineHeight = 5
 # ------------------------------------------------------------------------------------------------------------------- #
 
 # COMBINED LOGIC
@@ -31,5 +33,5 @@ viewable = master_callable_inputs_outputs(corrected_strikes=user_input_simulatio
                                           entry_start=EnterTradingPeriodStart, entry_end=EnterTradingPeriodEnd,
                                           exit_start=ExitTradingPeriodStart, exit_end=ExitTradingPeriodEnd)
 
-write_dict_to_pdf(viewable)
+write_dict_to_pdf(viewable, line_height=ReportLineHeight)
 open_recent_download()

@@ -3,7 +3,8 @@ from OptionsOperations.naming_and_cleaning import *
 
 
 class TestCompanies:
-    def __init__(self, min_revenue, from_date, to_date, data_limit, report_hour="amc", underlying_ticker="", max_companies=1):
+    def __init__(self, min_revenue, from_date, to_date, data_limit, report_hour="amc", underlying_ticker="",
+                 max_companies=1):
         self.min_revenue = int(min_revenue)
         self.from_date = from_date
         self.to_date = to_date
@@ -38,7 +39,8 @@ class TestCompanies:
             ):
                 new_entry = {'symbol': item["symbol"],
                              'date': item["date"],
-                             'period': item["hour"]
+                             'period': item["hour"],
+                             'revenue_estimate': item["revenueEstimate"]
                              }
 
                 symbols_list.append(new_entry)
@@ -86,8 +88,11 @@ class TestCompanies:
                                 'low': low
                             })
                 except KeyError:
-                    print(f"Cool down on Polygon Stock API calls. Wait 1 minute. Iteration fail: {j}")
-                    break
+                    if len(price_averages) >= self.max_companies:
+                        print(f"Cool down on Polygon Stock API calls. Wait 1 minute. Iteration fail: {j}")
+                        break
+                    else:
+                        continue
 
                 raw_prices = []
                 for data_point in processed_data:
