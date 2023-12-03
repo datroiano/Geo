@@ -1,0 +1,5 @@
+pandas
+finnhub-python
+fpdf
+openpyxl
+reportlab
