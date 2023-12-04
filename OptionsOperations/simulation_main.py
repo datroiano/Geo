@@ -13,7 +13,7 @@ PeriodDateStart = '2023-11-19'  # Must remain without 1 month previous, until $7
 PeriodDateEnd = '2023-12-03'
 ReportHourType = 'amc'  # Has proper functionality
 MaxCompaniesReported = 4  # Must remain at 5 until Polygon stock API is paid for $25. Can be expended to the hundreds+
-TickerPairingSize = 45  # Determines how many options are searched via option chain lookup
+TickerPairingSize = 60  # Determines how many options are searched via option chain lookup
 OptionsPricingConstant = 1  # 0 is low, 1 is average high/low, 2 is high. Default = 1
 
 EnterTradingPeriodStart = '09:45:00'
@@ -27,9 +27,10 @@ OpenReport = 'YES'
 # ------------------------------------------------------------------------------------------------------------------- #
 
 # COMBINED LOGIC
-user_input_simulation = TestCompanies(min_revenue=MinimumRevenueEstimate, from_date=PeriodDateStart, to_date=PeriodDateEnd,
-                                      report_hour=ReportHourType, max_companies=MaxCompaniesReported,
-                                      data_limit=TickerPairingSize, skipped_tickers=SkipCompanyList)
+user_input_simulation = TestCompanies(min_revenue=MinimumRevenueEstimate, from_date=PeriodDateStart,
+                                      to_date=PeriodDateEnd, report_hour=ReportHourType,
+                                      max_companies=MaxCompaniesReported, data_limit=TickerPairingSize,
+                                      skipped_tickers=SkipCompanyList)
 
 
 viewable = master_callable_inputs_outputs(corrected_strikes=user_input_simulation.correct_strikes,
