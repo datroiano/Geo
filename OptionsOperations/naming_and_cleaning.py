@@ -182,3 +182,14 @@ def closest_number(numbers_set, target):
             closest = number
 
     return closest
+
+
+def day_before(date_string):
+    input_date = datetime.strptime(date_string, '%Y-%m-%d')
+    if input_date.weekday() == 0:
+        previous_day = input_date - timedelta(days=3)
+    else:
+        previous_day = input_date - timedelta(days=1)
+    return previous_day.strftime('%Y-%m-%d')
+
+

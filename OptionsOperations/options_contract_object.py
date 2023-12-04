@@ -21,8 +21,7 @@ class OptionsContract:
 
 class OptionsContractsPriceData(OptionsContract):
     def __init__(self, options_contract=None, from_date=None, to_date=None, window_start_time=None,
-                 window_end_time=None,
-                 timespan=None, polygon_api_key='r1Jqp6JzYYhbt9ak10x9zOpoj1bf58Zz', multiplier=1):
+                 window_end_time=None, timespan=None, polygon_api_key='r1Jqp6JzYYhbt9ak10x9zOpoj1bf58Zz', multiplier=1):
         super().__init__(options_contract.ticker, options_contract.strike, options_contract.expiration_date,
                          options_contract.is_call)
 
@@ -37,7 +36,7 @@ class OptionsContractsPriceData(OptionsContract):
         self.exp_month = int(self.expiration_date[5:7])
         self.exp_year = int(self.expiration_date[2:4])
 
-    def pull_options_price_data(self):
+    def _make_api_request(self):
         from_date = to_unix_time(f'{self.from_date} {self.window_start_time}')
         to_date = to_unix_time(f'{self.to_date} {self.window_end_time}')
 
@@ -45,82 +44,58 @@ class OptionsContractsPriceData(OptionsContract):
                                                expiration_month=self.exp_month, expiration_day=self.exp_day,
                                                contract_type=self.is_call)
 
-        # Polygon verification
-        headers = {
-            "Authorization": f"Bearer {self.polygon_api_key}"
-        }
+        headers = {"Authorization": f"Bearer {self.polygon_api_key}"}
 
-        # Polygon data endpoint
         endpoint = f"https://api.polygon.io/v2/aggs/ticker/{options_ticker}/range/{self.multiplier}/{self.timespan}/{from_date}/{to_date}"
 
-        # Getting the options data as requested
         response = requests.get(endpoint, headers=headers).json()
 
-        if response['queryCount'] == 0 or response['status'] == 'ERROR':  # Return None value
+        return response
+
+    def pull_options_price_data(self):
+        response = self._make_api_request()
+
+        if response.get('queryCount', 0) == 0 or response.get('status') == 'ERROR':
             return None
 
         cleaned_response = {
-            from_unix_time(timestamp['t']): {'volume': timestamp['v'], 'volume_weighted': timestamp['vw'],
-                                             'open': timestamp['o'], 'unix_time': timestamp['t'],
-                                             'close': timestamp['c'], 'high': timestamp['h'], 'low': timestamp['l'],
-                                             'number': timestamp['n']} for timestamp in response['results']}
+            from_unix_time(timestamp['t']): {
+                'volume': timestamp['v'],
+                'volume_weighted': timestamp['vw'],
+                'open': timestamp['o'],
+                'unix_time': timestamp['t'],
+                'close': timestamp['c'],
+                'high': timestamp['h'],
+                'low': timestamp['l'],
+                'number': timestamp['n']
+            }
+            for timestamp in response.get('results', [])
+        }
 
         return cleaned_response
 
     def get_query_count_for_timeperiod(self):
-        from_date = to_unix_time(f'{self.from_date} {self.window_start_time}')
-        to_date = to_unix_time(f'{self.to_date} {self.window_end_time}')
+        response = self._make_api_request()
 
-        options_ticker = create_options_ticker(ticker=self.ticker, strike=self.strike, expiration_year=self.exp_year,
-                                               expiration_month=self.exp_month, expiration_day=self.exp_day,
-                                               contract_type=self.is_call)
-
-        # Polygon verification
-        headers = {
-            "Authorization": f"Bearer {self.polygon_api_key}"
-        }
-
-        # Polygon data endpoint
-        endpoint = f"https://api.polygon.io/v2/aggs/ticker/{options_ticker}/range/{self.multiplier}/{self.timespan}/{from_date}/{to_date}"
-
-        # Getting the options data as requested
-        response = requests.get(endpoint, headers=headers).json()
-
-        if response['queryCount'] == 0 or response['status'] == 'ERROR':  # Return None value
+        if response.get('queryCount', 0) == 0 or response.get('status') == 'ERROR':
             return None
-        else:
-            return response['queryCount']
+
+        return response.get('queryCount')
 
     def get_raw_data(self):
-        from_date = to_unix_time(f'{self.from_date} {self.window_start_time}')
-        to_date = to_unix_time(f'{self.to_date} {self.window_end_time}')
+        response = self._make_api_request()
 
-        options_ticker = create_options_ticker(ticker=self.ticker, strike=self.strike, expiration_year=self.exp_year,
-                                               expiration_month=self.exp_month, expiration_day=self.exp_day,
-                                               contract_type=self.is_call)
-
-        # Polygon verification
-        headers = {
-            "Authorization": f"Bearer {self.polygon_api_key}"
-        }
-
-        # Polygon data endpoint
-        endpoint = f"https://api.polygon.io/v2/aggs/ticker/{options_ticker}/range/{self.multiplier}/{self.timespan}/{from_date}/{to_date}"
-
-        # Getting the options data as requested
-        response = requests.get(endpoint, headers=headers).json()
-
-        if response['queryCount'] == 0 or response['status'] == 'ERROR':  # Return None value
+        if response.get('queryCount', 0) == 0 or response.get('status') == 'ERROR':
             return None
-        else:
-            return response
+
+        return response
 
 
 # Using an OptionsContract instance
-test_contract = OptionsContract("AAPL", 180, '2023-09-29')
-test_contract_data = OptionsContractsPriceData(options_contract=test_contract,
-                                               from_date='2023-09-28', to_date='2023-09-28',
-                                               window_start_time='09:30:00', window_end_time='16:30:00',
-                                               timespan='minute')
-printable = test_contract_data.pull_options_price_data()
+# test_contract = OptionsContract("AAPL", 180, '2023-09-29')
+# test_contract_data = OptionsContractsPriceData(options_contract=test_contract,
+#                                                from_date='2023-09-28', to_date='2023-09-28',
+#                                                window_start_time='09:30:00', window_end_time='16:30:00',
+#                                                timespan='minute')
+# printable = test_contract_data.pull_options_price_data()
 # print(printable)

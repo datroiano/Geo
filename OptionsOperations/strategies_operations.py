@@ -128,35 +128,85 @@ class TwoOptionStrategy:
         exit_data_2 = [value for value in self.op_2_data.values() if
                        exit_window_start <= value['unix_time'] <= exit_window_end]
 
-        combined_entry_data = [
-            {
-                'unix_time': item1['unix_time'],
-                'time': from_unix_time(item1['unix_time']),  # You need to define this function
-                'strategy_value': item1['low'] + item2['low'],
-                'strategy_volume': item1['volume'] + item2['volume']
-            }
-            for item1 in entry_data_1
-            for item2 in entry_data_2
-            if item1['unix_time'] == item2['unix_time']
-        ]
-
-        combined_exit_data = [
-            {
-                'unix_time': item1['unix_time'],
-                'time': from_unix_time(item1['unix_time']),  # You need to define this function
-                'strategy_value': item1['low'] + item2['low'],
-                'strategy_volume': item1['volume'] + item2['volume']
-            }
-            for item1 in exit_data_1
-            for item2 in exit_data_2
-            if item1['unix_time'] == item2['unix_time']
-        ]
+        if pricing == 0:
+            combined_entry_data = [
+                {
+                    'unix_time': item1['unix_time'],
+                    'time': from_unix_time(item1['unix_time']),
+                    'strategy_value': item1['low'] + item2['low'],
+                    'strategy_volume': item1['volume'] + item2['volume']
+                }
+                for item1 in entry_data_1
+                for item2 in entry_data_2
+                if item1['unix_time'] == item2['unix_time']
+            ]
+            combined_exit_data = [
+                {
+                    'unix_time': item1['unix_time'],
+                    'time': from_unix_time(item1['unix_time']),
+                    'strategy_value': item1['low'] + item2['low'],
+                    'strategy_volume': item1['volume'] + item2['volume']
+                }
+                for item1 in exit_data_1
+                for item2 in exit_data_2
+                if item1['unix_time'] == item2['unix_time']
+            ]
+        elif pricing == 1:
+            combined_entry_data = [
+                {
+                    'unix_time': item1['unix_time'],
+                    'time': from_unix_time(item1['unix_time']),
+                    'strategy_value': ((item1['low'] + item1['high']) / 2) + ((item2['low'] + item2['high']) / 2),
+                    'strategy_volume': item1['volume'] + item2['volume']
+                }
+                for item1 in entry_data_1
+                for item2 in entry_data_2
+                if item1['unix_time'] == item2['unix_time']
+            ]
+            combined_exit_data = [
+                {
+                    'unix_time': item1['unix_time'],
+                    'time': from_unix_time(item1['unix_time']),
+                    'strategy_value': ((item1['low'] + item1['high']) / 2) + ((item2['low'] + item2['high']) / 2),
+                    'strategy_volume': item1['volume'] + item2['volume']
+                }
+                for item1 in exit_data_1
+                for item2 in exit_data_2
+                if item1['unix_time'] == item2['unix_time']
+            ]
+        elif pricing == 2:
+            combined_entry_data = [
+                {
+                    'unix_time': item1['unix_time'],
+                    'time': from_unix_time(item1['unix_time']),
+                    'strategy_value': item1['high'] + item2['high'],
+                    'strategy_volume': item1['volume'] + item2['volume']
+                }
+                for item1 in entry_data_1
+                for item2 in entry_data_2
+                if item1['unix_time'] == item2['unix_time']
+            ]
+            combined_exit_data = [
+                {
+                    'unix_time': item1['unix_time'],
+                    'time': from_unix_time(item1['unix_time']),
+                    'strategy_value': item1['high'] + item2['high'],
+                    'strategy_volume': item1['volume'] + item2['volume']
+                }
+                for item1 in exit_data_1
+                for item2 in exit_data_2
+                if item1['unix_time'] == item2['unix_time']
+            ]
+        else:
+            return None  # Will throw an error since pricing selection is not 0, 1, or 2
 
         simulation_data = []
         for item1 in combined_entry_data:
             entry_time = item1['unix_time']
+            entry_trading_volume = item1['strategy_volume']
             for item2 in combined_exit_data:
                 exit_time = item2['unix_time']
+                exit_trading_volume = item2['strategy_volume']
 
                 if entry_time < exit_time:
                     entry_strategy_value = item1['strategy_value']
@@ -169,7 +219,9 @@ class TwoOptionStrategy:
                         'entry_time': from_unix_time(entry_time),
                         'exit_time': from_unix_time(exit_time),
                         'entry_strategy_value': round(entry_strategy_value * size, ndigits=2),
+                        'entry_trading_volume': round(entry_trading_volume, ndigits=2),
                         'exit_strategy_value': round(exit_strategy_value * size, ndigits=2),
+                        'exit_trading_volume': round(exit_trading_volume, ndigits=2),
                         'profit_loss_dollars': round(profit_loss_dollars, ndigits=2),
                         'profit_loss_percent': round(profit_loss_percent, ndigits=4)
                     })
@@ -200,16 +252,25 @@ class MetaAnalysis:
         return simulation_df
 
 
-def master_callable_inputs_outputs(corrected_strikes, entry_start, entry_end, exit_start, exit_end):
-    master_out = []
+def master_callable_inputs_outputs(corrected_strikes, entry_start, entry_end, exit_start, exit_end, pricing=1):
+    # Console printing for viewing
     print(f'Length of Entries Dictionary: {len(corrected_strikes)}')
     print(f'Attempted Entries:')
+    attempted_entries = []
     for tick in corrected_strikes:
-        print(tick['symbol'])
-    print(f'Iterated Entries:')
+        attempted_entries.append(tick['symbol'])
+    print(attempted_entries)
+    print(f'Iterated Entries (Option Price Data):')
+    if pricing == 0:
+        price_text = "low"
+    elif pricing == 1:
+        price_text = "average"
+    else:
+        price_text = "high"
 
-    i = 0
-    j = 0
+    master_out = []
+    i = 0  # Iteration counter
+    j = 0  # Used iteration counter (non-error)
     for item in corrected_strikes:
         i += 1
         if len(item) == 0:
@@ -220,7 +281,7 @@ def master_callable_inputs_outputs(corrected_strikes, entry_start, entry_end, ex
             strike1 = item['target_strike']
             strike2 = item['target_strike']
             expirations = item['target_expiration_date']
-            trade_date = item['date']
+            trade_date = item['trade_date']
             try:
                 contract1 = oc.OptionsContract(ticker, strike1, expirations, is_call=True)
                 contract1data = oc.OptionsContractsPriceData(options_contract=contract1,
@@ -258,21 +319,45 @@ def master_callable_inputs_outputs(corrected_strikes, entry_start, entry_end, ex
                     continue
 
             try:
-                simulation = TwoOptionStrategy(contract1data.pull_options_price_data(), contract2data.pull_options_price_data())
+                simulation = TwoOptionStrategy(contract1data.pull_options_price_data(),
+                                               contract2data.pull_options_price_data())
                 long_straddle = simulation.long_strangle_simulation(entry_window_start=f'{trade_date} {entry_start}',
                                                                     entry_window_end=f'{trade_date} {entry_end}',
                                                                     exit_window_start=f'{trade_date} {exit_start}',
-                                                                    exit_window_end=f'{trade_date} {exit_end}')
+                                                                    exit_window_end=f'{trade_date} {exit_end}',
+                                                                    pricing=pricing)
             except:
                 print(f'Iteration {i} Skipped - Combined Data Error ({ticker})')
                 continue
 
             j += 1
+
+            meta_data = MetaAnalysis(long_straddle)
+            if len(meta_data.profit_loss_percent_table()) == 0:
+                avg_return = 0
+                variance = 0
+                std_dev = 0
+            else:
+                avg_return = statistics.mean(meta_data.profit_loss_percent_table())
+                variance = statistics.variance(meta_data.profit_loss_percent_table())
+                std_dev = statistics.stdev(meta_data.profit_loss_percent_table())
+
             new_entry = {'ticker': ticker,
-                         'strike_price': strike1,
-                         'expiration_date': expirations,
+                         'earnings_report_date': item['earnings_report_date'],
                          'trade_date': trade_date,
-                         f'sim{j}': long_straddle}
+                         'reporting_period': item['period'],
+                         'option_strike_price': strike1,
+                         'option_expiration_date': expirations,
+                         'options_pricing_model': price_text,
+                         'company_fiscal_year': item["fiscal_year"],
+                         'company_fiscal_quarter': item['fiscal_quarter'],
+                         'revenue_estimated': item['revenue_estimate'],
+                         'revenue_actual': item['revenue_actual'],
+                         f'sim-company-{j}': {'average_return_percent': round(avg_return, ndigits=4),
+                                              'return_variance': round(variance, ndigits=4),
+                                              'return_standard_deviation': round(std_dev, ndigits=4),
+                                              'raw_simulation_data': long_straddle}
+                         }
 
             if len(long_straddle) == 0:
                 print(f'Iteration {i} Skipped - Simulation Fail ({ticker})')
@@ -283,8 +368,9 @@ def master_callable_inputs_outputs(corrected_strikes, entry_start, entry_end, ex
 
     return master_out
 
-
-# test_corrected_strikes = [{'symbol': 'CRM', 'target_strike': 230, 'date': '2023-11-29', 'target_expiration_date': '2023-12-01'}, {'symbol': 'HPQ', 'target_strike': 28, 'date': '2023-11-21', 'target_expiration_date': '2023-11-24'}]
+# test_corrected_strikes = [{'symbol': 'CRM', 'target_strike': 230, 'date': '2023-11-29',
+# 'target_expiration_date': '2023-12-01'}, {'symbol': 'HPQ', 'target_strike': 28, 'date': '2023-11-21',
+# 'target_expiration_date': '2023-11-24'}]
 #
 # master_callable_inputs_outputs(test_corrected_strikes, entry_start='09:30:00', entry_end='11:00:00',
 #                                exit_start="14:00:00", exit_end="15:59:00")
