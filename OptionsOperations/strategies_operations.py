@@ -200,31 +200,17 @@ class TwoOptionStrategy:
         else:
             return None  # Will throw an error since pricing selection is not 0, 1, or 2
 
-        simulation_data = []
-        for item1 in combined_entry_data:
-            entry_time = item1['unix_time']
-            entry_trading_volume = item1['strategy_volume']
-            for item2 in combined_exit_data:
-                exit_time = item2['unix_time']
-                exit_trading_volume = item2['strategy_volume']
-
-                if entry_time < exit_time:
-                    entry_strategy_value = item1['strategy_value']
-                    exit_strategy_value = item2['strategy_value']
-
-                    profit_loss_dollars = (exit_strategy_value - entry_strategy_value) * size
-                    profit_loss_percent = ((exit_strategy_value - entry_strategy_value) * size / entry_strategy_value)
-
-                    simulation_data.append({
-                        'entry_time': from_unix_time(entry_time),
-                        'exit_time': from_unix_time(exit_time),
-                        'entry_strategy_value': round(entry_strategy_value * size, ndigits=2),
-                        'entry_trading_volume': round(entry_trading_volume, ndigits=2),
-                        'exit_strategy_value': round(exit_strategy_value * size, ndigits=2),
-                        'exit_trading_volume': round(exit_trading_volume, ndigits=2),
-                        'profit_loss_dollars': round(profit_loss_dollars, ndigits=2),
-                        'profit_loss_percent': round(profit_loss_percent, ndigits=4)
-                    })
+        simulation_data = [{
+            'entry_time': from_unix_time(item1['unix_time']),
+            'exit_time': from_unix_time(item2['unix_time']),
+            'entry_strategy_value': round(item1['strategy_value'] * size, ndigits=2),
+            'entry_trading_volume': round(item1['strategy_volume'], ndigits=2),
+            'exit_strategy_value': round(item2['strategy_value'] * size, ndigits=2),
+            'exit_trading_volume': round(item2['strategy_volume'], ndigits=2),
+            'profit_loss_dollars': round((item2['strategy_value'] - item1['strategy_value']) * size, ndigits=2),
+            'profit_loss_percent': round(
+                ((item2['strategy_value'] - item1['strategy_value']) * size / item1['strategy_value']), ndigits=4)
+        } for item1 in combined_entry_data for item2 in combined_exit_data if item1['unix_time'] < item2['unix_time']]
 
         return simulation_data
 

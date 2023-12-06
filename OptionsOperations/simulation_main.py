@@ -8,10 +8,10 @@ from OptionsOperations.excel_functions import open_recent_download
 
 # ------------------------------------------------------------------------------------------------------------------- #
 #                                   Company Screening Inputs (Multi-Company Report)                                   #
-MinimumRevenueEstimate = 5_500_000_000
+MinimumRevenueEstimate = 20_000_000_000
 PeriodDateStart = '2023-11-19'  # Must remain without 1 month previous, until $75 per month subscription is paid
-PeriodDateEnd = '2023-12-03'
-ReportHourType = 'amc'  # Has proper functionality
+PeriodDateEnd = '2023-12-06'
+ReportHourType = ''  # Has proper functionality - either bmo, amc, or ""
 MaxCompaniesReported = 4  # Must remain at 5 until Polygon stock API is paid for $25. Can be expended to the hundreds+
 TickerPairingSize = 60  # Determines how many options are searched via option chain lookup
 OptionsPricingConstant = 1  # 0 is low, 1 is average high/low, 2 is high. Default = 1
