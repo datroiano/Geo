@@ -3,13 +3,16 @@ from OptionsOperations.strategies_operations import master_callable_inputs_outpu
 from PDFCreation.raw_pdf import write_dict_to_pdf
 from OptionsOperations.excel_functions import open_recent_download
 from OptionsOperations.temp_entries import tickers
+from OptionsOperations.__init__ import time
+from log_setup import logger
+from OptionsOperations.strategies_operations import get_bulk_iterations
 
 # USER DOCUMENTATION AVAILABLE IN ALTERNATE FILE
 # USER INTERFACE - FUTURE PORTION OF PROJECT
 
 # ------------------------------------------------------------------------------------------------------------------- #
 #                                   Company Screening Inputs (Multi-Company Report)                                   #
-MinimumRevenueEstimate = 10_000_000_000
+MinimumRevenueEstimate = 25_000_000_000
 PeriodDateStart = ''  # Must remain without 1 month previous, until $75 per month subscription is paid
 PeriodDateEnd = ''
 ReportHourType = ''  # Has proper functionality - either bmo, amc, or ""
@@ -24,12 +27,14 @@ ExitTradingPeriodEnd = '15:59:00'
 
 CustomSkipCompanyList = []
 ReportLineHeight = 5
-OpenReport = 'YES'
+OpenReport = 'NO'
 SkipCompaniesStoredInCache = 'NO'
 ClearCacheUponRunning = 'YES'
 # ------------------------------------------------------------------------------------------------------------------- #
 
 # COMBINED LOGIC
+start_time = time.perf_counter()
+
 PeriodDateStart = get_date_31_days_ago() if PeriodDateStart == "" else PeriodDateStart
 PeriodDateEnd = get_today_date() if PeriodDateEnd == "" else PeriodDateEnd
 CustomSkipCompanyList = tickers if SkipCompaniesStoredInCache.upper() == "YES" else CustomSkipCompanyList
@@ -46,6 +51,12 @@ viewable = master_callable_inputs_outputs(corrected_strikes=user_input_simulatio
                                           pricing=OptionsPricingConstant, clear_at_end=ClearCacheUponRunning.upper())
 
 write_dict_to_pdf(viewable, line_height=ReportLineHeight)
+
+
+logger.info(f'Bulk Calc Dictionaries: {get_bulk_iterations(viewable)}')
+end_time = time.perf_counter()
+execution_time = end_time - start_time
+logger.info(f"Execution time: {execution_time:.2f} seconds")
 
 if OpenReport.upper() == "YES":
     open_recent_download()

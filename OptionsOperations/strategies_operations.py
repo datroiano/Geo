@@ -260,7 +260,6 @@ def master_callable_inputs_outputs(corrected_strikes, entry_start, entry_end, ex
     for tick in corrected_strikes:
         attempted_entries.append(tick['symbol'])
     logger.info(attempted_entries)
-    logger.info(f'Iterated Entries (Option Price Data):')
     if pricing == 0:
         price_text = "low"
     elif pricing == 1:
@@ -376,17 +375,28 @@ def master_callable_inputs_outputs(corrected_strikes, entry_start, entry_end, ex
 
         try:
             from temp_entries import tickers
+
         except ImportError:
             tickers = []
 
         tickers.extend(tickers_utilized)
 
         with open('temp_entries.py', 'w') as file:
-            file.write(f"tickers = {tickers}\n")
+            file.write(f"tickers = {list(set(tickers))}\n")
 
     display_cached_companies_to_console(clear_at_end=clear_at_end)
 
     return master_out
+
+
+def get_bulk_iterations(master_out):
+    bi = 0
+    i = 0
+    for item in master_out:
+        i += 1
+        bi += len(item[f'sim-company-{i}']['raw_simulation_data'])
+
+    return(bi)
 
 # test_corrected_strikes = [{'symbol': 'CRM', 'target_strike': 230, 'date': '2023-11-29',
 # 'target_expiration_date': '2023-12-01'}, {'symbol': 'HPQ', 'target_strike': 28, 'date': '2023-11-21',
