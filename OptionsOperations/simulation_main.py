@@ -2,41 +2,48 @@ from OptionsOperations.earnings_calendar_pulls import *
 from OptionsOperations.strategies_operations import master_callable_inputs_outputs
 from PDFCreation.raw_pdf import write_dict_to_pdf
 from OptionsOperations.excel_functions import open_recent_download
+from OptionsOperations.temp_entries import tickers
 
 # USER DOCUMENTATION AVAILABLE IN ALTERNATE FILE
 # USER INTERFACE - FUTURE PORTION OF PROJECT
 
 # ------------------------------------------------------------------------------------------------------------------- #
 #                                   Company Screening Inputs (Multi-Company Report)                                   #
-MinimumRevenueEstimate = 20_000_000_000
-PeriodDateStart = '2023-11-19'  # Must remain without 1 month previous, until $75 per month subscription is paid
-PeriodDateEnd = '2023-12-06'
+MinimumRevenueEstimate = 10_000_000_000
+PeriodDateStart = ''  # Must remain without 1 month previous, until $75 per month subscription is paid
+PeriodDateEnd = ''
 ReportHourType = ''  # Has proper functionality - either bmo, amc, or ""
-MaxCompaniesReported = 4  # Must remain at 5 until Polygon stock API is paid for $25. Can be expended to the hundreds+
-TickerPairingSize = 60  # Determines how many options are searched via option chain lookup
+MaxCompaniesReported = 5  # Must remain at 5 until Polygon stock API is paid for $25. Can be expended to the hundreds+
+TickerPairingSize = 55  # Determines how many options are searched via option chain lookup
 OptionsPricingConstant = 1  # 0 is low, 1 is average high/low, 2 is high. Default = 1
 
-EnterTradingPeriodStart = '09:45:00'
+EnterTradingPeriodStart = '09:30:00'
 EnterTradingPeriodEnd = '11:00:00'
-ExitTradingPeriodStart = '15:45:00'
+ExitTradingPeriodStart = '14:30:00'
 ExitTradingPeriodEnd = '15:59:00'
 
-SkipCompanyList = []  # Has proper functionality, leave as empty list to attempt all possible matching companies
+CustomSkipCompanyList = []
 ReportLineHeight = 5
 OpenReport = 'YES'
+SkipCompaniesStoredInCache = 'NO'
+ClearCacheUponRunning = 'YES'
 # ------------------------------------------------------------------------------------------------------------------- #
 
 # COMBINED LOGIC
+PeriodDateStart = get_date_31_days_ago() if PeriodDateStart == "" else PeriodDateStart
+PeriodDateEnd = get_today_date() if PeriodDateEnd == "" else PeriodDateEnd
+CustomSkipCompanyList = tickers if SkipCompaniesStoredInCache.upper() == "YES" else CustomSkipCompanyList
+
 user_input_simulation = TestCompanies(min_revenue=MinimumRevenueEstimate, from_date=PeriodDateStart,
                                       to_date=PeriodDateEnd, report_hour=ReportHourType,
                                       max_companies=MaxCompaniesReported, data_limit=TickerPairingSize,
-                                      skipped_tickers=SkipCompanyList)
+                                      skipped_tickers=CustomSkipCompanyList)
 
 
 viewable = master_callable_inputs_outputs(corrected_strikes=user_input_simulation.correct_strikes,
                                           entry_start=EnterTradingPeriodStart, entry_end=EnterTradingPeriodEnd,
                                           exit_start=ExitTradingPeriodStart, exit_end=ExitTradingPeriodEnd,
-                                          pricing=OptionsPricingConstant)
+                                          pricing=OptionsPricingConstant, clear_at_end=ClearCacheUponRunning.upper())
 
 write_dict_to_pdf(viewable, line_height=ReportLineHeight)
 

@@ -238,15 +238,29 @@ class MetaAnalysis:
         return simulation_df
 
 
-def master_callable_inputs_outputs(corrected_strikes, entry_start, entry_end, exit_start, exit_end, pricing=1):
-    # Console printing for viewing
-    print(f'Length of Entries Dictionary: {len(corrected_strikes)}')
-    print(f'Attempted Entries:')
+def display_cached_companies_to_console(clear_at_end):
+    if clear_at_end == "NO":
+        try:
+            from temp_entries import tickers
+        except ImportError:
+            tickers = []
+
+        logger.info(f'Post-Report Cached Tickers:')
+        for ticker in tickers:
+            logger.info(ticker)
+    else:
+        logger.info('Cache Cleared for Future Reporting')
+
+
+def master_callable_inputs_outputs(corrected_strikes, entry_start, entry_end, exit_start, exit_end, clear_at_end,
+                                   pricing=1):
+    logger.info(f'Length of Entries Dictionary: {len(corrected_strikes)}')
+    logger.info(f'Attempted Entries:')
     attempted_entries = []
     for tick in corrected_strikes:
         attempted_entries.append(tick['symbol'])
-    print(attempted_entries)
-    print(f'Iterated Entries (Option Price Data):')
+    logger.info(attempted_entries)
+    logger.info(f'Iterated Entries (Option Price Data):')
     if pricing == 0:
         price_text = "low"
     elif pricing == 1:
@@ -256,11 +270,11 @@ def master_callable_inputs_outputs(corrected_strikes, entry_start, entry_end, ex
 
     master_out = []
     i = 0  # Iteration counter
-    j = 0  # Used iteration counter (non-error)
+    j = 0  # Actually used iteration counter (non-error)
     for item in corrected_strikes:
         i += 1
         if len(item) == 0:
-            print(f"Iteration Skipped (Data Not Available or Usable): {i}")
+            logger.error(f"Iteration Skipped (Data Not Available or Usable): {i}")
             continue
         else:
             ticker = item['symbol']
@@ -283,7 +297,7 @@ def master_callable_inputs_outputs(corrected_strikes, entry_start, entry_end, ex
                                                                  window_end_time='16:30:00',
                                                                  timespan='minute')
                 except:
-                    print(f'Iteration {i} Skipped - Option Contract 1 Fail ({ticker})')
+                    logger.info(f'Iteration {i} Skipped - Option Contract 1 Fail ({ticker})')
                     continue
 
             try:
@@ -301,7 +315,7 @@ def master_callable_inputs_outputs(corrected_strikes, entry_start, entry_end, ex
                                                                  window_end_time='16:30:00',
                                                                  timespan='minute')
                 except:
-                    print(f'Iteration {i} Skipped - Option Contract 2 Fail ({ticker})')
+                    logger.error(f'Iteration {i} Skipped - Option Contract 2 Fail ({ticker})')
                     continue
 
             try:
@@ -313,7 +327,7 @@ def master_callable_inputs_outputs(corrected_strikes, entry_start, entry_end, ex
                                                                     exit_window_end=f'{trade_date} {exit_end}',
                                                                     pricing=pricing)
             except:
-                print(f'Iteration {i} Skipped - Combined Data Error ({ticker})')
+                logger.error(f'Iteration {i} Skipped - Combined Data Error ({ticker})')
                 continue
 
             j += 1
@@ -346,11 +360,31 @@ def master_callable_inputs_outputs(corrected_strikes, entry_start, entry_end, ex
                          }
 
             if len(long_straddle) == 0:
-                print(f'Iteration {i} Skipped - Simulation Fail ({ticker})')
+                logger.error(f'Iteration {i} Skipped - Simulation Fail ({ticker})')
                 continue
             else:
                 master_out.append(new_entry)
-                print(f'{ticker} (ITERATIONS PASSED)')
+                logger.info(f'{ticker} (ITERATIONS PASSED)')
+
+    if clear_at_end == "YES":
+        with open('temp_entries.py', 'w') as file:
+            file.write("tickers = []\n")
+    else:
+        tickers_utilized = []
+        for i in master_out:
+            tickers_utilized.append(i['ticker'])
+
+        try:
+            from temp_entries import tickers
+        except ImportError:
+            tickers = []
+
+        tickers.extend(tickers_utilized)
+
+        with open('temp_entries.py', 'w') as file:
+            file.write(f"tickers = {tickers}\n")
+
+    display_cached_companies_to_console(clear_at_end=clear_at_end)
 
     return master_out
 

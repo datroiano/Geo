@@ -193,3 +193,12 @@ def day_before(date_string):
     return previous_day.strftime('%Y-%m-%d')
 
 
+def get_date_31_days_ago():
+    current_date = datetime.now().date()
+    date_31_days_ago = current_date - timedelta(days=31)
+    formatted_date = date_31_days_ago.strftime('%Y-%m-%d')
+    return formatted_date
+
+
+def get_today_date():
+    return datetime.now().date().strftime('%Y-%m-%d')

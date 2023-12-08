@@ -110,7 +110,7 @@ class TestCompanies:
                             'low': low
                         })
             except KeyError:
-                print(f"Cool down on Polygon Stock API calls. Wait 1 minute. Iteration fail: {j}")
+                logger.info(f"Polygon API data empty (potentially cool down). Iteration fail: {j}")
                 break
 
             raw_prices = []
@@ -133,7 +133,7 @@ class TestCompanies:
             price_averages.append(new_entry)
 
             i += 1
-            print(f'Stock Price Iteration Pass: {i}')
+            logger.info(f'Stock Price Iteration Pass: {i}')
             if i >= self.max_companies:
                 break
 
