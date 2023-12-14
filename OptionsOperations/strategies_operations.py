@@ -394,7 +394,10 @@ def get_bulk_iterations(master_out):
     i = 0
     for item in master_out:
         i += 1
-        bi += len(item[f'sim-company-{i}']['raw_simulation_data'])
+        try:
+            bi += len(item[f'sim-company-{i}']['raw_simulation_data'])
+        except KeyError:
+            continue
 
     return(bi)
 

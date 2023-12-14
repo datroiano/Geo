@@ -12,7 +12,7 @@ from OptionsOperations.strategies_operations import get_bulk_iterations
 
 # ------------------------------------------------------------------------------------------------------------------- #
 #                                   Company Screening Inputs (Multi-Company Report)                                   #
-MinimumRevenueEstimate = 25_000_000_000
+MinimumRevenueEstimate = 100_000_000
 PeriodDateStart = '2023-12-01'  # Must remain without 1 month previous, until $75 per month subscription is paid
 PeriodDateEnd = '2023-12-13'  # Has to be one less than today's date
 ReportHourType = ''  # Has proper functionality - either bmo, amc, or ""
