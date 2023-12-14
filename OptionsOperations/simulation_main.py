@@ -13,8 +13,8 @@ from OptionsOperations.strategies_operations import get_bulk_iterations
 # ------------------------------------------------------------------------------------------------------------------- #
 #                                   Company Screening Inputs (Multi-Company Report)                                   #
 MinimumRevenueEstimate = 25_000_000_000
-PeriodDateStart = ''  # Must remain without 1 month previous, until $75 per month subscription is paid
-PeriodDateEnd = ''
+PeriodDateStart = '2023-12-01'  # Must remain without 1 month previous, until $75 per month subscription is paid
+PeriodDateEnd = '2023-12-13'  # Has to be one less than today's date
 ReportHourType = ''  # Has proper functionality - either bmo, amc, or ""
 MaxCompaniesReported = 5  # Must remain at 5 until Polygon stock API is paid for $25. Can be expended to the hundreds+
 TickerPairingSize = 55  # Determines how many options are searched via option chain lookup
