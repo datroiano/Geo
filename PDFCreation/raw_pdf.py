@@ -1,4 +1,5 @@
 from PDFCreation.__init__ import *
+from UserInterface import sample_cleaned_data
 
 
 def raw_data_pdf(cleaned_response):
@@ -16,10 +17,14 @@ def raw_data_pdf(cleaned_response):
 
     json_paragraph = Paragraph(json_data, style)
 
+
     content.append(json_paragraph)
     doc.build(content)
     print(f"PDF saved as {pdf_filename}")
     subprocess.Popen(["start", "", pdf_filename], shell=True)
+
+
+# creation = raw_data_pdf(sample_cleaned_data.cleaned_data)
 
 
 def write_dict_to_pdf(data, line_height=8, font_size=10, title="Simulation Results"):

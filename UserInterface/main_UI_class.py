@@ -9,12 +9,12 @@ class LocalUI:
         self.window.geometry("1500x1000")
         self.window.title("Report Generator")
 
-        # for i in range(8): # Incorporate if you want to make a larger UI in general
-        #     self.window.columnconfigure(i, weight=1)
-        #
-        # self.window.rowconfigure(0, weight=2)
-        # for i in range(1, 10):
-        #     self.window.rowconfigure(i, weight=1)
+        for i in range(8):  # Incorporate if you want to make a larger UI in general
+            self.window.columnconfigure(i, weight=1)
+
+        self.window.rowconfigure(0, weight=1)
+        for i in range(1, 10):
+            self.window.rowconfigure(i, weight=1)
 
         tk.Label(master=self.window, text="Report Generator (Trade Simulator)",
                  justify="center", font=("Times New Roman", 20), fg="white", bg="black", width=100,
