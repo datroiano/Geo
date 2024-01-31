@@ -14,11 +14,11 @@ from OptionsOperations.naming_and_cleaning import day_before
 # ------------------------------------------------------------------------------------------------------------------- #
 #                                   Company Screening Inputs (Multi-Company Report)                                   #
 MinimumRevenueEstimate = 10_000_000_000
-PeriodDateStart = ''  # Must remain without 1 month previous, until $75 per month subscription is paid
-PeriodDateEnd = ''  # Has to be one less than today's date
-ReportHourType = ''  # Has proper functionality - either bmo, amc, or ""
+PeriodDateStart = ''  # Must remain without 1 month previous, until $75 per month subscription is paid (default)
+PeriodDateEnd = ''  # Has to be one less than today's date (blank defaults to this)
+ReportHourType = ''  # Has proper functionality - either bmo, amc, or *blank*
 MaxCompaniesReported = 5  # Must remain at 5 until Polygon stock API is paid for $25. Can be expended to the hundreds+
-TickerPairingSize = 55  # Determines how many options are searched via option chain lookup
+TickerPairingSize = 55  # Determines how many options are searched via option chain lookup (to find entry strike)
 OptionsPricingConstant = 1  # 0 is low, 1 is average high/low, 2 is high. Default = 1
 
 EnterTradingPeriodStart = '09:30:00'

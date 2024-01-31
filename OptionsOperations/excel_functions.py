@@ -40,16 +40,16 @@ def save_to_excel(df, avg_return, std_dev):
             cell.number_format = numbers.FORMAT_PERCENTAGE_00
 
         # Adjust width for statstical data columns
-        sheet.column_dimensions['H'].width = 15  # Adjust the width for column H
-        sheet.column_dimensions['I'].width = 15  # Adjust the width for column I
+        sheet.column_dimensions['J'].width = 15  # Adjust the width for column H
+        sheet.column_dimensions['K'].width = 15  # Adjust the width for column I
 
         # Writing AVG RETURN and STD DEV as percentages with 2 decimal places
-        sheet['H2'] = 'AVG RETURN'
-        sheet['H3'].number_format = '0.00%'  # Format cell H3 as percentage with 2 decimal places
-        sheet['H3'] = avg_return
-        sheet['I2'] = 'STD DEV'
-        sheet['I3'].number_format = '0.00%'  # Format cell I3 as percentage with 2 decimal places
-        sheet['I3'] = std_dev
+        sheet['J2'] = 'AVG RETURN'
+        sheet['J3'].number_format = '0.00%'  # Format cell H3 as percentage with 2 decimal places
+        sheet['J3'] = avg_return
+        sheet['K2'] = 'STD DEV'
+        sheet['K3'].number_format = '0.00%'  # Format cell I3 as percentage with 2 decimal places
+        sheet['K3'] = std_dev
 
         # Center align all cells
         for row in sheet.iter_rows(min_row=1, max_row=(len(df) + 1)):
