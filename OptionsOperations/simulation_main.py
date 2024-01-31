@@ -6,6 +6,7 @@ from OptionsOperations.temp_entries import tickers
 from OptionsOperations.__init__ import time
 from log_setup import logger
 from OptionsOperations.strategies_operations import get_bulk_iterations
+from OptionsOperations.naming_and_cleaning import day_before
 
 # USER DOCUMENTATION AVAILABLE IN ALTERNATE FILE
 # USER INTERFACE - FUTURE PORTION OF PROJECT
@@ -13,8 +14,8 @@ from OptionsOperations.strategies_operations import get_bulk_iterations
 # ------------------------------------------------------------------------------------------------------------------- #
 #                                   Company Screening Inputs (Multi-Company Report)                                   #
 MinimumRevenueEstimate = 10_000_000_000
-PeriodDateStart = '2023-11-17'  # Must remain without 1 month previous, until $75 per month subscription is paid
-PeriodDateEnd = '2023-12-15'  # Has to be one less than today's date
+PeriodDateStart = ''  # Must remain without 1 month previous, until $75 per month subscription is paid
+PeriodDateEnd = ''  # Has to be one less than today's date
 ReportHourType = ''  # Has proper functionality - either bmo, amc, or ""
 MaxCompaniesReported = 5  # Must remain at 5 until Polygon stock API is paid for $25. Can be expended to the hundreds+
 TickerPairingSize = 55  # Determines how many options are searched via option chain lookup
@@ -36,7 +37,7 @@ ClearCacheUponRunning = 'YES'
 start_time = time.perf_counter()
 
 PeriodDateStart = get_date_31_days_ago() if PeriodDateStart == "" else PeriodDateStart
-PeriodDateEnd = get_today_date() if PeriodDateEnd == "" else PeriodDateEnd
+PeriodDateEnd = day_before(get_today_date()) if PeriodDateEnd == "" else PeriodDateEnd
 CustomSkipCompanyList = tickers if SkipCompaniesStoredInCache.upper() == "YES" else CustomSkipCompanyList
 
 user_input_simulation = TestCompanies(min_revenue=MinimumRevenueEstimate, from_date=PeriodDateStart,
