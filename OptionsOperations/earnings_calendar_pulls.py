@@ -176,9 +176,9 @@ class TestCompanies:
         return correct_strikes
 
 
-# SAMPLE USAGE
-# simulation = TestCompanies(min_revenue=10_000_000_000, from_date="2023-11-01", to_date="2023-11-29",
-#                            report_hour="", data_limit=60, skipped_tickers=[])
+# # SAMPLE USAGE
+# simulation = TestCompanies(min_revenue=1_000_000_000, from_date="2024-01-03", to_date="2024-01-31",
+#                            report_hour="", data_limit=60, skipped_tickers=[], underlying_ticker="GOOGL")
 # print(simulation.symbols_list)
 # - which is in the format: [{'symbol': 'SNPS', 'target_strike': 550,
 # 'date': '2023-11-29', 'target_expiration_date': '2023-12-01'}]
