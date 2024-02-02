@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Options Operations Result</title>
+    <!-- Your head content here -->
+</head>
+<body>
+    {% if result %}
+    <div>
+        <p>{{ result }}</p>
+        {% if execution_time %}
+        <p>Execution Time: {{ execution_time }} seconds</p>
+        {% endif %}
+    </div>
+    {% endif %}
+
+    <!-- Button to go back to index.html with defaults -->
+    <form action="{{ url_for('index') }}" method="get">
+        <button type="submit">Create A New Report</button>
+    </form>
+</body>
+</html>

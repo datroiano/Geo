@@ -368,7 +368,7 @@ def master_callable_inputs_outputs(corrected_strikes, entry_start, entry_end, ex
     if clear_at_end == "YES":
         with open('temp_entries.py', 'w') as file:
             file.write("tickers = []\n")
-    else:
+    elif clear_at_end == "NO":
         tickers_utilized = []
         for i in master_out:
             tickers_utilized.append(i['ticker'])

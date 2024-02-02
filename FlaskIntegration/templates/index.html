@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Options Operations GUI</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #333;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        form {
+            background-color: #444;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+            position: relative;
+        }
+
+        label, input {
+            display: block;
+            margin-bottom: 16px;
+            color: #fff;
+        }
+
+        input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #666;
+            border-radius: 4px;
+            box-sizing: border-box;
+            background-color: #555;
+            color: #fff;
+        }
+
+        button {
+            background-color: #4caf50;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            grid-column: span 2; /* Make the button span both columns */
+        }
+
+        .loading-spinner {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.5);
+            display: none;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .spinner-container {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            border: 8px solid #fff;
+            border-top: 8px solid transparent;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <form action="{{ url_for('run_operations') }}" method="post">
+        <label for="min_revenue">Minimum Revenue Estimate:</label>
+        <input type="text" name="min_revenue" value="10,000,000,000">
+
+        <label for="period_date_start">Period Date Start:</label>
+        <input type="text" name="period_date_start" value="">
+
+        <label for="period_date_end">Period Date End:</label>
+        <input type="text" name="period_date_end" value="">
+
+        <label for="report_hour_type">Report Hour Type:</label>
+        <input type="text" name="report_hour_type" value="amc">
+
+        <label for="max_companies_reported">Max Companies Reported:</label>
+        <input type="text" name="max_companies_reported" value="5">
+
+        <label for="ticker_pairing_size">Ticker Pairing Size:</label>
+        <input type="text" name="ticker_pairing_size" value="55">
+
+        <label for="options_pricing_constant">Options Pricing Constant:</label>
+        <input type="text" name="options_pricing_constant" value="1">
+
+        <label for="enter_trading_period_start">Enter Trading Period Start:</label>
+        <input type="text" name="enter_trading_period_start" value="09:30:00">
+
+        <label for="enter_trading_period_end">Enter Trading Period End:</label>
+        <input type="text" name="enter_trading_period_end" value="11:00:00">
+
+        <label for="exit_trading_period_start">Exit Trading Period Start:</label>
+        <input type="text" name="exit_trading_period_start" value="14:00:00">
+
+        <label for="exit_trading_period_end">Exit Trading Period End:</label>
+        <input type="text" name="exit_trading_period_end" value="15:59:00">
+
+        <label for="custom_skip_company_list">Custom Skip Company List:</label>
+        <input type="text" name="custom_skip_company_list" value="">
+
+        <label for="report_line_height">Report Line Height:</label>
+        <input type="text" name="report_line_height" value="5">
+
+        <label for="open_report">Open Report:</label>
+        <input type="text" name="open_report" value="YES">
+
+        <button type="submit" id="submitBtn">Create Report</button>
+        <div class="loading-spinner" id="loadingSpinner"></div>
+    </form>
+
+    <script>
+        document.getElementById('submitBtn').addEventListener('click', function() {
+            document.getElementById('loadingSpinner').style.display = 'inline-block';
+        });
+    </script>
+</body>
+</html>

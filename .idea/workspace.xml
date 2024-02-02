@@ -5,12 +5,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9ec2a096-cc25-4021-83ad-c171cb77a001" name="Changes" comment="init">
-      <change afterPath="$PROJECT_DIR$/UserInterface/temp_entries.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/FlaskIntegration/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/FlaskIntegration/temp_entries.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/FlaskIntegration/templates/index.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/FlaskIntegration/templates/result.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Practice/AAPL_Trades.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Practice/AAPL_earnings_report.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OptionsOperations/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/OptionsOperations/__init__.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/OptionsOperations/strategies_operations.py" beforeDir="false" afterPath="$PROJECT_DIR$/OptionsOperations/strategies_operations.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/UserInterface/main_UI_class.py" beforeDir="false" afterPath="$PROJECT_DIR$/UserInterface/main_UI_class.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Practice/practice.py" beforeDir="false" afterPath="$PROJECT_DIR$/Practice/practice.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -37,7 +40,7 @@
   <component name="GithubPullRequestsUISettings">
     <option name="selectedUrlAndAccountId">
       <UrlAndAccount>
-        <option name="accountId" value="59b6dc70-5991-4259-9bc5-a4b3b35ff76b" />
+        <option name="accountId" value="964c0c34-b301-4ea0-8512-73922cec289c" />
         <option name="url" value="https://github.com/datroiano/Geo.git" />
       </UrlAndAccount>
     </option>
@@ -57,6 +60,7 @@
   "keyToString": {
     "ASKED_ADD_EXTERNAL_FILES": "true",
     "DefaultHtmlFileTemplate": "HTML File",
+    "Python.__init__.executor": "Run",
     "Python.main_UI_class.executor": "Run",
     "Python.practice.executor": "Run",
     "Python.simulation_main.executor": "Run",
@@ -80,6 +84,28 @@
     </key>
   </component>
   <component name="RunManager">
+    <configuration name="__init__" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="Geo" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/FlaskIntegration" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/FlaskIntegration/__init__.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <configuration name="main_UI_class" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="Geo" />
       <option name="ENV_FILES" value="" />
@@ -104,6 +130,7 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.__init__" />
         <item itemvalue="Python.main_UI_class" />
       </list>
     </recent_temporary>
@@ -344,7 +371,15 @@
       <option name="project" value="LOCAL" />
       <updated>1706722402127</updated>
     </task>
-    <option name="localTasksCounter" value="28" />
+    <task id="LOCAL-00028" summary="init">
+      <option name="closed" value="true" />
+      <created>1706906177028</created>
+      <option name="number" value="00028" />
+      <option name="presentableId" value="LOCAL-00028" />
+      <option name="project" value="LOCAL" />
+      <updated>1706906177028</updated>
+    </task>
+    <option name="localTasksCounter" value="29" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
