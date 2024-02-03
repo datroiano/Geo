@@ -57,6 +57,12 @@
 </head>
 <body>
     <h2>Earnings Straddle Simulation Results</h2>
+
+    <a href="index.html" style="position: absolute; top: 20px; right: 20px; color: #61dafb; text-decoration: none;">
+        <form action="{{ url_for('index') }}" method="get">
+        <button type="submit">Create A New Report</button>
+    </form>
+    </a>
 <!-- Dropdown menu for selecting companies -->
 <select id="companySelector" onchange="loadCompanyData()">
     {% for company in data %}
