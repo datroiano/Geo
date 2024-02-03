@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Financial Dashboard</title>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <style>
         body {
             background-color: #121212;
@@ -41,57 +42,137 @@
         a:hover {
             text-decoration: underline;
         }
+
+        select {
+            margin-top: 20px;
+            padding: 10px;
+            font-size: 16px;
+        }
     </style>
 </head>
 <body>
 
-<h1>{{ data[0]['ticker'] }} - Trade Simulation Execution Summary</h1>
-
-<table>
-    <tr>
-        <th>Earnings Report Date</th>
-        <th>Trade Date</th>
-        <th>Option Strike Price</th>
-        <th>Option Expiration Date</th>
-        <th>Revenue Estimated</th>
-        <th>Revenue Actual</th>
-    </tr>
-    <tr>
-        <td>{{ data[0]['earnings_report_date'] }}</td>
-        <td>{{ data[0]['trade_date'] }}</td>
-        <td>{{ data[0]['option_strike_price'] }}</td>
-        <td>{{ data[0]['option_expiration_date'] }}</td>
-        <td>{{ data[0]['revenue_estimated'] }}</td>
-        <td>{{ data[0]['revenue_actual'] }}</td>
-    </tr>
-</table>
-
-<h2>Simulation Data</h2>
-
-<table>
-    <tr>
-        <th>Entry Time</th>
-        <th>Exit Time</th>
-        <th>Entry Strategy Value</th>
-        <th>Entry Trading Volume</th>
-        <th>Exit Strategy Value</th>
-        <th>Exit Trading Volume</th>
-        <th>Profit/Loss Dollars</th>
-        <th>Profit/Loss Percent</th>
-    </tr>
-    {% for trade in data[0]['sim-company-1']['raw_simulation_data'] %}
-    <tr>
-        <td>{{ trade['entry_time'] }}</td>
-        <td>{{ trade['exit_time'] }}</td>
-        <td>{{ trade['entry_strategy_value'] }}</td>
-        <td>{{ trade['entry_trading_volume'] }}</td>
-        <td>{{ trade['exit_strategy_value'] }}</td>
-        <td>{{ trade['exit_trading_volume'] }}</td>
-        <td>{{ trade['profit_loss_dollars'] }}</td>
-        <td>{{ trade['profit_loss_percent'] }}</td>
-    </tr>
+<!-- Dropdown menu for selecting companies -->
+<select id="companySelector" onchange="loadCompanyData()">
+    {% for company in data %}
+        <option value="{{ loop.index0 }}">{{ company['ticker'] }}</option>
     {% endfor %}
-</table>
+</select>
+
+<!-- Content for displaying selected company data -->
+<div id="companyDataContainer">
+    <h1 id="companyTitle"></h1>
+
+    <table>
+        <!-- Headers -->
+        <tr>
+            <th>Earnings Report Date</th>
+            <th>Trade Date</th>
+            <th>Option Strike Price</th>
+            <th>Option Expiration Date</th>
+            <th>Revenue Estimated</th>
+            <th>Revenue Actual</th>
+        </tr>
+        <!-- Data for the selected company -->
+        <tr id="companyData">
+            <!-- Data will be loaded dynamically using JavaScript -->
+        </tr>
+    </table>
+
+        <table>
+        <!-- Headers -->
+        <tr>
+            <th>Average Return Percent</th>
+            <th>Return Variance</th>
+            <th>Return Standard Deviation</th>
+        </tr>
+        <!-- Data for the selected company -->
+        <tr id="companyMetaData">
+            <!-- Data will be loaded dynamically using JavaScript -->
+        </tr>
+    </table>
+
+    <h2>Simulation Data</h2>
+
+    <table id="simulationTable">
+        <!-- Headers -->
+        <tr>
+            <th>Entry Time</th>
+            <th>Exit Time</th>
+            <th>Entry Strategy Value</th>
+            <th>Entry Trading Volume</th>
+            <th>Exit Strategy Value</th>
+            <th>Exit Trading Volume</th>
+            <th>Profit/Loss Dollars</th>
+            <th>Profit/Loss Percent</th>
+        </tr>
+        <!-- Data for the selected company's simulation -->
+        <!-- Data will be loaded dynamically using JavaScript -->
+    </table>
+</div>
+
+<script>
+    // JavaScript function to load data for the selected company
+    function loadCompanyData() {
+    var companySelector = document.getElementById("companySelector");
+    var selectedCompanyIndex = companySelector.value;
+
+    // Get data for the selected company
+    var selectedCompany = {{ data|tojson|safe }}[selectedCompanyIndex];
+
+    // Update the title
+    document.getElementById("companyTitle").innerHTML = selectedCompany['ticker'] + " - Trade Simulation Execution Summary";
+
+    // Update the general data
+    var companyData = document.getElementById("companyData");
+    companyData.innerHTML = "<td>" + selectedCompany['earnings_report_date'] + "</td>" +
+                            "<td>" + selectedCompany['trade_date'] + "</td>" +
+                            "<td>" + selectedCompany['option_strike_price'] + "</td>" +
+                            "<td>" + selectedCompany['option_expiration_date'] + "</td>" +
+                            "<td>" + selectedCompany['revenue_estimated'] + "</td>" +
+                            "<td>" + selectedCompany['revenue_actual'] + "</td>";
+
+
+    // Update the simulation data using jQuery
+    var simulationTable = $("#simulationTable");
+    simulationTable.empty(); // Clear existing data
+
+    // Add table headers
+    simulationTable.append("<tr><th>Entry Time</th><th>Exit Time</th><th>Entry Strategy Value</th>" +
+                            "<th>Entry Trading Volume</th><th>Exit Strategy Value</th>" +
+                            "<th>Exit Trading Volume</th><th>Profit/Loss Dollars</th>" +
+                            "<th>Profit/Loss Percent</th></tr>");
+
+    // Determine the correct key for simulation data dynamically
+    var simulationDataKey = Object.keys(selectedCompany).find(key => key.startsWith('sim-'));
+
+    // Loop through simulation data for the selected company and append rows
+    for (var i = 0; i < selectedCompany[simulationDataKey]['raw_simulation_data'].length; i++) {
+        var trade = selectedCompany[simulationDataKey]['raw_simulation_data'][i];
+
+        // Append a new row to the table using jQuery
+        simulationTable.append("<tr><td>" + trade['entry_time'] + "</td>" +
+                                "<td>" + trade['exit_time'] + "</td>" +
+                                "<td>" + trade['entry_strategy_value'] + "</td>" +
+                                "<td>" + trade['entry_trading_volume'] + "</td>" +
+                                "<td>" + trade['exit_strategy_value'] + "</td>" +
+                                "<td>" + trade['exit_trading_volume'] + "</td>" +
+                                "<td>" + trade['profit_loss_dollars'] + "</td>" +
+                                "<td>" + trade['profit_loss_percent'] + "</td></tr>");
+    }
+}
+
+
+// Function to update the entire form based on the selected company
+function updateForm() {
+    // Call the function to load company data
+    loadCompanyData();
+}
+
+// Initial load when the page loads
+updateForm();
+</script>
+
 
 </body>
 </html>
