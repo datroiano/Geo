@@ -181,9 +181,9 @@
                                     "<td>" + trade['entry_trading_volume'] + "</td>" +
                                     "<td>$" + trade['exit_strategy_value'] + "</td>" +
                                     "<td>" + trade['exit_trading_volume'] + "</td>" +
-                                    "<td style='color: " + (trade['profit_loss_dollars'] < 0 ? 'red' : (trade['profit_loss_dollars'] > 0 ? 'green' : 'black')) + "'>" +
+                                    "<td style='color: " + (trade['profit_loss_dollars'] < 0 ? 'red' : (trade['profit_loss_dollars'] > 0 ? 'green' : 'white')) + "'>" +
                                     (trade['profit_loss_dollars'] < 0 ? "-$" : "$") + Math.abs(trade['profit_loss_dollars']).toFixed(2) + "</td>" +
-                                    "<td style='color: " + (trade['profit_loss_percent'] < 0 ? 'red' : (trade['profit_loss_percent'] > 0 ? 'green' : 'black')) + "'>" +
+                                    "<td style='color: " + (trade['profit_loss_percent'] < 0 ? 'red' : (trade['profit_loss_percent'] > 0 ? 'green' : 'white')) + "'>" +
                                     (trade['profit_loss_percent'] * 100).toFixed(2) + "%</td></tr>");
         }
     }
@@ -191,7 +191,7 @@
     // Function to update the metadata for the selected company
     function updateMetaData(selectedCompany) {
         var metaDataContainer = document.getElementById("companyMetaData");
-        metaDataContainer.innerHTML = "<td style='color: " + (selectedCompany['simulation']['average_return_percent'] < 0 ? 'red' : (selectedCompany['simulation']['average_return_percent'] > 0 ? 'green' : 'black')) + "'>" +
+        metaDataContainer.innerHTML = "<td style='color: " + (selectedCompany['simulation']['average_return_percent'] < 0 ? 'red' : (selectedCompany['simulation']['average_return_percent'] > 0 ? 'green' : 'white')) + "'>" +
                                         (selectedCompany['simulation']['average_return_percent'] * 100).toFixed(2) + "%</td></tr>" +
                                       "<td>" + selectedCompany['simulation']['trades_simulated'] + "</td>" +
                                       "<td>" + selectedCompany['simulation']['return_variance'] + "</td>" +

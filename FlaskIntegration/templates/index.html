@@ -107,10 +107,11 @@
         <input type="text" name="min_revenue" value="10,000,000,000">
 
         <label for="period_date_start">Period Date Start:</label>
-        <input type="text" name="period_date_start" value="">
+        <input type="date" name="period_date_start" value="" pattern="\d{2}-\d{2}-\d{4}" placeholder="DD-MM-YYYY">
 
         <label for="period_date_end">Period Date End:</label>
-        <input type="text" name="period_date_end" value="">
+        <input type="date" name="period_date_end" value="" pattern="\d{2}-\d{2}-\d{4}" placeholder="DD-MM-YYYY">
+
 
         <label for="max_companies_reported">Max Companies Reported:</label>
         <input type="text" name="max_companies_reported" value="2">
