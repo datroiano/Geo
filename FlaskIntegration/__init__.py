@@ -6,8 +6,7 @@ from PDFCreation.raw_pdf import write_dict_to_pdf
 from OptionsOperations.excel_functions import open_recent_download
 from OptionsOperations.temp_entries import tickers
 from OptionsOperations.__init__ import time
-from OptionsOperations.strategies_operations import get_bulk_iterations
-import logging
+
 
 app = Flask(__name__)
 

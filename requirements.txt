@@ -3,3 +3,4 @@ finnhub-python
 fpdf
 openpyxl
 reportlab
+flask
