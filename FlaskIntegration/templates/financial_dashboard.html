@@ -17,6 +17,11 @@
         color: #61dafb;
     }
 
+    h2 {
+    color: #61dafb;
+    margin-top: 20px; /* Adjusted margin */
+    }
+
     table {
         width: 100%;
         border-collapse: collapse;
@@ -51,7 +56,7 @@
     </style>
 </head>
 <body>
-
+    <h2>Earnings Straddle Simulation Results</h2>
 <!-- Dropdown menu for selecting companies -->
 <select id="companySelector" onchange="loadCompanyData()">
     {% for company in data %}
@@ -179,9 +184,11 @@
     // Function to update the metadata for the selected company
     function updateMetaData(selectedCompany) {
         var metaDataContainer = document.getElementById("companyMetaData");
-        metaDataContainer.innerHTML = "<td>" + (selectedCompany['simulation']['average_return_percent'] * 100).toFixed(2) + "%</td>" +
+        metaDataContainer.innerHTML = "<td style='color: " + (selectedCompany['simulation']['average_return_percent'] < 0 ? 'red' : (selectedCompany['simulation']['average_return_percent'] > 0 ? 'green' : 'black')) + "'>" +
+                                        (selectedCompany['simulation']['average_return_percent'] * 100).toFixed(2) + "%</td></tr>" +
                                       "<td>" + selectedCompany['simulation']['return_variance'] + "</td>" +
                                       "<td>" + (selectedCompany['simulation']['return_standard_deviation'] * 100).toFixed(2) + "%</td>";
+
     }
 
     // Function to update the entire form based on the selected company
