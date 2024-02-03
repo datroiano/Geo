@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Financial Dashboard</title>
+    <style>
+        body {
+            background-color: #121212;
+            color: #ffffff;
+            font-family: 'Arial', sans-serif;
+            margin: 20px;
+        }
+
+        h1 {
+            color: #61dafb;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            border: 1px solid #333;
+            padding: 10px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #333;
+            color: #ffffff;
+        }
+
+        a {
+            color: #61dafb;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+<h1>{{ data[0]['ticker'] }} - Trade Simulation Execution Summary</h1>
+
+<table>
+    <tr>
+        <th>Earnings Report Date</th>
+        <th>Trade Date</th>
+        <th>Option Strike Price</th>
+        <th>Option Expiration Date</th>
+        <th>Revenue Estimated</th>
+        <th>Revenue Actual</th>
+    </tr>
+    <tr>
+        <td>{{ data[0]['earnings_report_date'] }}</td>
+        <td>{{ data[0]['trade_date'] }}</td>
+        <td>{{ data[0]['option_strike_price'] }}</td>
+        <td>{{ data[0]['option_expiration_date'] }}</td>
+        <td>{{ data[0]['revenue_estimated'] }}</td>
+        <td>{{ data[0]['revenue_actual'] }}</td>
+    </tr>
+</table>
+
+<h2>Simulation Data</h2>
+
+<table>
+    <tr>
+        <th>Entry Time</th>
+        <th>Exit Time</th>
+        <th>Entry Strategy Value</th>
+        <th>Entry Trading Volume</th>
+        <th>Exit Strategy Value</th>
+        <th>Exit Trading Volume</th>
+        <th>Profit/Loss Dollars</th>
+        <th>Profit/Loss Percent</th>
+    </tr>
+    {% for trade in data[0]['sim-company-1']['raw_simulation_data'] %}
+    <tr>
+        <td>{{ trade['entry_time'] }}</td>
+        <td>{{ trade['exit_time'] }}</td>
+        <td>{{ trade['entry_strategy_value'] }}</td>
+        <td>{{ trade['entry_trading_volume'] }}</td>
+        <td>{{ trade['exit_strategy_value'] }}</td>
+        <td>{{ trade['exit_trading_volume'] }}</td>
+        <td>{{ trade['profit_loss_dollars'] }}</td>
+        <td>{{ trade['profit_loss_percent'] }}</td>
+    </tr>
+    {% endfor %}
+</table>
+
+</body>
+</html>

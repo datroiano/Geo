@@ -7,7 +7,6 @@ from OptionsOperations.excel_functions import open_recent_download
 from OptionsOperations.temp_entries import tickers
 from OptionsOperations.__init__ import time
 
-
 app = Flask(__name__)
 
 
@@ -61,6 +60,9 @@ def run_operations():
 
         write_dict_to_pdf(viewable, line_height=report_line_height)
 
+        global financial_data
+        financial_data = viewable
+
         if open_report.upper() == "YES":
             open_recent_download()
 
@@ -70,6 +72,19 @@ def run_operations():
 
         return render_template('result.html', result='Operation completed successfully',
                                execution_time=execution_time)
+
+
+@app.route('/financial_dashboard')
+def financial_dashboard():
+    global financial_data
+    if request.method == 'GET':
+        if financial_data is not None:
+            return render_template('financial_dashboard.html', data=financial_data)
+        else:
+            return render_template('financial_dashboard.html', data=None)
+    else:
+        # Handle other methods if needed
+        return render_template('error.html', error_message='Method Not Allowed')
 
 
 if __name__ == '__main__':
