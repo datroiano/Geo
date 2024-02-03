@@ -353,9 +353,10 @@ def master_callable_inputs_outputs(corrected_strikes, entry_start, entry_end, ex
                          'revenue_estimated': item['revenue_estimate'],
                          'revenue_actual': item['revenue_actual'],
                          f'simulation': {'average_return_percent': round(avg_return, ndigits=4),
-                                              'return_variance': round(variance, ndigits=4),
-                                              'return_standard_deviation': round(std_dev, ndigits=4),
-                                              'raw_simulation_data': long_straddle}
+                                         'return_variance': round(variance, ndigits=4),
+                                         'return_standard_deviation': round(std_dev, ndigits=4),
+                                         'trades_simulated': len(long_straddle),
+                                         'raw_simulation_data': long_straddle}
                          }
 
             if len(long_straddle) == 0:
@@ -399,7 +400,7 @@ def get_bulk_iterations(master_out):
         except KeyError:
             continue
 
-    return(bi)
+    return (bi)
 
 # test_corrected_strikes = [{'symbol': 'CRM', 'target_strike': 230, 'date': '2023-11-29',
 # 'target_expiration_date': '2023-12-01'}, {'symbol': 'HPQ', 'target_strike': 28, 'date': '2023-11-21',

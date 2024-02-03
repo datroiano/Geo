@@ -88,8 +88,9 @@
         <!-- Headers -->
         <tr>
             <th>Average Return Percent</th>
+            <th>Trades Simulated</th>
             <th>Return Variance</th>
-            <th>Return Standard Deviation</th>
+            <th>Return Standard Deviation</th
         </tr>
         <!-- Data for the selected company -->
         <tr id="companyMetaData">
@@ -186,6 +187,7 @@
         var metaDataContainer = document.getElementById("companyMetaData");
         metaDataContainer.innerHTML = "<td style='color: " + (selectedCompany['simulation']['average_return_percent'] < 0 ? 'red' : (selectedCompany['simulation']['average_return_percent'] > 0 ? 'green' : 'black')) + "'>" +
                                         (selectedCompany['simulation']['average_return_percent'] * 100).toFixed(2) + "%</td></tr>" +
+                                      "<td>" + selectedCompany['simulation']['trades_simulated'] + "</td>" +
                                       "<td>" + selectedCompany['simulation']['return_variance'] + "</td>" +
                                       "<td>" + (selectedCompany['simulation']['return_standard_deviation'] * 100).toFixed(2) + "%</td>";
 
