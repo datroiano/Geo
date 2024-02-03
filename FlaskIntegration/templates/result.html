@@ -5,17 +5,109 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Options Operations Result</title>
-    <!-- Your head content here -->
+
+    <style>
+        body {
+            background-color: #1a1a1a; /* Dark background color */
+            color: #fff; /* Text color */
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1 {
+            margin-top: 30px;
+        }
+
+        .label-execution-time {
+            color: #fff;
+            font-size: 18px;
+            margin-bottom: 20px; /* Increased margin */
+        }
+
+        .number-line-container {
+            position: relative;
+            width: 70%;
+            margin: 0 auto; /* Adjusted margin */
+        }
+
+        .bar {
+            height: 30px;
+            border-radius: 5px;
+            background: linear-gradient(to right, #4caf50 0%, #ffcc29 50%, #ff5733 100%);
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 100%;
+        }
+
+        .bar-label {
+            position: absolute;
+            top: -60px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #fff;
+        }
+
+        .execution-time-box {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            left: calc(({{ execution_time|round(2) }} / 60) * 100%);
+            background-color: #333;
+            color: #fff;
+            padding: 5px;
+            border-radius: 5px;
+            white-space: nowrap;
+        }
+
+        .label-left,
+        .label-right {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #fff;
+        }
+
+        .label-left {
+            left: 0;
+        }
+
+        .label-right {
+            right: 0;
+        }
+
+        p {
+            margin: 20px 0;
+        }
+
+        button {
+            padding: 15px 25px;
+            background-color: #4caf50;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 30px;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
 </head>
 <body>
-    {% if result %}
-    <div>
-        <p>{{ result }}</p>
-        {% if execution_time %}
-        <p>Execution Time: {{ execution_time }} seconds</p>
-        {% endif %}
+    <h1>Operation Completion Successful</h1>
+
+    <div class="label-execution-time">Execution Time</div>
+
+    <div class="number-line-container">
+        <div class="bar"></div>
+        <div class="execution-time-box">{{ execution_time|round(2) }}s</div>
+        <div class="label-left">0 sec</div>
+        <div class="label-right">&gt;1 min</div>
     </div>
-    {% endif %}
 
     <!-- Button to go back to index.html with defaults -->
     <form action="{{ url_for('index') }}" method="get">
