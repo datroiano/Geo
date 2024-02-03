@@ -352,7 +352,7 @@ def master_callable_inputs_outputs(corrected_strikes, entry_start, entry_end, ex
                          'company_fiscal_quarter': item['fiscal_quarter'],
                          'revenue_estimated': item['revenue_estimate'],
                          'revenue_actual': item['revenue_actual'],
-                         f'sim-company-{j}': {'average_return_percent': round(avg_return, ndigits=4),
+                         f'simulation': {'average_return_percent': round(avg_return, ndigits=4),
                                               'return_variance': round(variance, ndigits=4),
                                               'return_standard_deviation': round(std_dev, ndigits=4),
                                               'raw_simulation_data': long_straddle}

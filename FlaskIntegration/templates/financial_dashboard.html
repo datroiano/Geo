@@ -6,48 +6,48 @@
     <title>Financial Dashboard</title>
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <style>
-        body {
-            background-color: #121212;
-            color: #ffffff;
-            font-family: 'Arial', sans-serif;
-            margin: 20px;
-        }
+    body {
+        background-color: #121212;
+        color: #ffffff;
+        font-family: 'Arial', sans-serif;
+        margin: 20px;
+    }
 
-        h1 {
-            color: #61dafb;
-        }
+    h1 {
+        color: #61dafb;
+    }
 
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-        }
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+    }
 
-        th, td {
-            border: 1px solid #333;
-            padding: 10px;
-            text-align: left;
-        }
+    th, td {
+        border: 1px solid #333;
+        padding: 10px;
+        text-align: center; /* Center-align text in each column */
+    }
 
-        th {
-            background-color: #333;
-            color: #ffffff;
-        }
+    th {
+        background-color: #333;
+        color: #ffffff;
+    }
 
-        a {
-            color: #61dafb;
-            text-decoration: none;
-        }
+    a {
+        color: #61dafb;
+        text-decoration: none;
+    }
 
-        a:hover {
-            text-decoration: underline;
-        }
+    a:hover {
+        text-decoration: underline;
+    }
 
-        select {
-            margin-top: 20px;
-            padding: 10px;
-            font-size: 16px;
-        }
+    select {
+        margin-top: 20px;
+        padding: 10px;
+        font-size: 16px;
+    }
     </style>
 </head>
 <body>
@@ -112,65 +112,87 @@
 </div>
 
 <script>
+    // Function for date conversion
+    function convertToAMPM(timeString) {
+    // Create a new Date object with the given time string
+    const time = new Date("2000-01-01T" + timeString);
+
+    // Format the time as AM/PM
+    const formattedTime = time.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
+
+    return formattedTime;
+}
     // JavaScript function to load data for the selected company
+
     function loadCompanyData() {
-    var companySelector = document.getElementById("companySelector");
-    var selectedCompanyIndex = companySelector.value;
+        var companySelector = document.getElementById("companySelector");
+        var selectedCompanyIndex = companySelector.value;
 
-    // Get data for the selected company
-    var selectedCompany = {{ data|tojson|safe }}[selectedCompanyIndex];
+        // Get data for the selected company
+        var selectedCompany = {{ data|tojson|safe }}[selectedCompanyIndex];
 
-    // Update the title
-    document.getElementById("companyTitle").innerHTML = selectedCompany['ticker'] + " - Trade Simulation Execution Summary";
+        // Update the title
+        document.getElementById("companyTitle").innerHTML = selectedCompany['ticker'] + " - Trade Simulation Execution Summary";
 
-    // Update the general data
-    var companyData = document.getElementById("companyData");
-    companyData.innerHTML = "<td>" + selectedCompany['earnings_report_date'] + "</td>" +
-                            "<td>" + selectedCompany['trade_date'] + "</td>" +
-                            "<td>" + selectedCompany['option_strike_price'] + "</td>" +
-                            "<td>" + selectedCompany['option_expiration_date'] + "</td>" +
-                            "<td>" + selectedCompany['revenue_estimated'] + "</td>" +
-                            "<td>" + selectedCompany['revenue_actual'] + "</td>";
+        // Update the general data
+        var companyData = document.getElementById("companyData");
+        companyData.innerHTML = "<td>" + selectedCompany['earnings_report_date'] + "</td>" +
+                                "<td>" + selectedCompany['trade_date'] + "</td>" +
+                                "<td>$" + parseFloat(selectedCompany['option_strike_price']).toFixed(2) + "</td>" +
+                                "<td>" + selectedCompany['option_expiration_date'] + "</td>" +
+                                "<td>$" + parseFloat(selectedCompany['revenue_estimated']).toLocaleString() + "</td>" +
+                                "<td>$" + parseFloat(selectedCompany['revenue_actual']).toLocaleString() + "</td>";
 
 
-    // Update the simulation data using jQuery
-    var simulationTable = $("#simulationTable");
-    simulationTable.empty(); // Clear existing data
 
-    // Add table headers
-    simulationTable.append("<tr><th>Entry Time</th><th>Exit Time</th><th>Entry Strategy Value</th>" +
-                            "<th>Entry Trading Volume</th><th>Exit Strategy Value</th>" +
-                            "<th>Exit Trading Volume</th><th>Profit/Loss Dollars</th>" +
-                            "<th>Profit/Loss Percent</th></tr>");
+        // Update the metadata
+        updateMetaData(selectedCompany);
 
-    // Determine the correct key for simulation data dynamically
-    var simulationDataKey = Object.keys(selectedCompany).find(key => key.startsWith('sim-'));
+        // Update the simulation data using jQuery
+        var simulationTable = $("#simulationTable");
+        simulationTable.empty(); // Clear existing data
 
-    // Loop through simulation data for the selected company and append rows
-    for (var i = 0; i < selectedCompany[simulationDataKey]['raw_simulation_data'].length; i++) {
-        var trade = selectedCompany[simulationDataKey]['raw_simulation_data'][i];
+        // Add table headers
+        simulationTable.append("<tr><th>Entry Time</th><th>Exit Time</th><th>Entry Strategy Value</th>" +
+                                "<th>Entry Trading Volume</th><th>Exit Strategy Value</th>" +
+                                "<th>Exit Trading Volume</th><th>Profit/Loss Dollars</th>" +
+                                "<th>Profit/Loss Percent</th></tr>");
 
-        // Append a new row to the table using jQuery
-        simulationTable.append("<tr><td>" + trade['entry_time'] + "</td>" +
-                                "<td>" + trade['exit_time'] + "</td>" +
-                                "<td>" + trade['entry_strategy_value'] + "</td>" +
-                                "<td>" + trade['entry_trading_volume'] + "</td>" +
-                                "<td>" + trade['exit_strategy_value'] + "</td>" +
-                                "<td>" + trade['exit_trading_volume'] + "</td>" +
-                                "<td>" + trade['profit_loss_dollars'] + "</td>" +
-                                "<td>" + trade['profit_loss_percent'] + "</td></tr>");
+        // Loop through simulation data for the selected company and append rows
+        for (var i = 0; i < selectedCompany['simulation']['raw_simulation_data'].length; i++) {
+            var trade = selectedCompany['simulation']['raw_simulation_data'][i];
+
+            // Append a new row to the table using jQuery
+            simulationTable.append("<tr><td>" + convertToAMPM(trade['entry_time'].substr(-8)) + "</td>" +
+                                    "<td>" + convertToAMPM(trade['exit_time'].substr(-8)) + "</td>" +
+                                    "<td>$" + trade['entry_strategy_value'] + "</td>" +
+                                    "<td>" + trade['entry_trading_volume'] + "</td>" +
+                                    "<td>$" + trade['exit_strategy_value'] + "</td>" +
+                                    "<td>" + trade['exit_trading_volume'] + "</td>" +
+                                    "<td style='color: " + (trade['profit_loss_dollars'] < 0 ? 'red' : (trade['profit_loss_dollars'] > 0 ? 'green' : 'black')) + "'>" +
+                                    (trade['profit_loss_dollars'] < 0 ? "-$" : "$") + Math.abs(trade['profit_loss_dollars']).toFixed(2) + "</td>" +
+                                    "<td style='color: " + (trade['profit_loss_percent'] < 0 ? 'red' : (trade['profit_loss_percent'] > 0 ? 'green' : 'black')) + "'>" +
+                                    (trade['profit_loss_percent'] * 100).toFixed(2) + "%</td></tr>");
+        }
     }
-}
+
+    // Function to update the metadata for the selected company
+    function updateMetaData(selectedCompany) {
+        var metaDataContainer = document.getElementById("companyMetaData");
+        metaDataContainer.innerHTML = "<td>" + (selectedCompany['simulation']['average_return_percent'] * 100).toFixed(2) + "%</td>" +
+                                      "<td>" + selectedCompany['simulation']['return_variance'] + "</td>" +
+                                      "<td>" + (selectedCompany['simulation']['return_standard_deviation'] * 100).toFixed(2) + "%</td>";
+    }
+
+    // Function to update the entire form based on the selected company
+    function updateForm() {
+        // Call the function to load company data
+        loadCompanyData();
+    }
 
 
-// Function to update the entire form based on the selected company
-function updateForm() {
-    // Call the function to load company data
-    loadCompanyData();
-}
-
-// Initial load when the page loads
-updateForm();
+    // Initial load when the page loads
+    updateForm();
 </script>
 
 
