@@ -33,6 +33,7 @@ def run_operations():
         exit_trading_period_start = request.form['exit_trading_period_start']
         exit_trading_period_end = request.form['exit_trading_period_end']
         custom_skip_company_list = request.form['custom_skip_company_list']
+        custom_skip_company_list = [ticker.strip().upper() for ticker in custom_skip_company_list.split(',')]
         report_line_height = 5
         open_report = request.form['open_report']
         skip_companies_stored_in_cache = "NO"

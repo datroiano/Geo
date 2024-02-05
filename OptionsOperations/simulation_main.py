@@ -26,7 +26,7 @@ EnterTradingPeriodEnd = '11:00:00'
 ExitTradingPeriodStart = '14:30:00'
 ExitTradingPeriodEnd = '15:59:00'
 
-CustomSkipCompanyList = []
+CustomSkipCompanyList = ['CVX', 'CI', 'AAPL']
 ReportLineHeight = 5
 OpenReport = 'YES'
 SkipCompaniesStoredInCache = 'NO'

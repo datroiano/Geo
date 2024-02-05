@@ -400,7 +400,7 @@ def get_bulk_iterations(master_out):
         except KeyError:
             continue
 
-    return (bi)
+    return bi
 
 # test_corrected_strikes = [{'symbol': 'CRM', 'target_strike': 230, 'date': '2023-11-29',
 # 'target_expiration_date': '2023-12-01'}, {'symbol': 'HPQ', 'target_strike': 28, 'date': '2023-11-21',
