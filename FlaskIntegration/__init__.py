@@ -1,11 +1,11 @@
 # FlaskIntegration/app.py
 from flask import Flask, render_template, request
 from OptionsOperations.earnings_calendar_pulls import *
-from OptionsOperations.strategies_operations import master_callable_inputs_outputs
 from PDFCreation.raw_pdf import write_dict_to_pdf
 from OptionsOperations.excel_functions import open_recent_download
 from OptionsOperations.temp_entries import tickers
 from OptionsOperations.__init__ import time
+from OptionsOperations.master_class import MasterSimulation
 
 app = Flask(__name__)
 
@@ -51,18 +51,21 @@ def run_operations():
                                               max_companies=max_companies_reported, data_limit=ticker_pairing_size,
                                               skipped_tickers=CustomSkipCompanyList)
 
-        viewable = master_callable_inputs_outputs(corrected_strikes=user_input_simulation.correct_strikes,
-                                                  entry_start=enter_trading_period_start,
-                                                  entry_end=enter_trading_period_end,
-                                                  exit_start=exit_trading_period_start,
-                                                  exit_end=exit_trading_period_end,
-                                                  pricing=options_pricing_constant,
-                                                  clear_at_end=clear_cache_upon_running.upper())
+        simulation = MasterSimulation(corrected_strikes=user_input_simulation.correct_strikes,
+                                      entry_start=enter_trading_period_start,
+                                      entry_end=enter_trading_period_end,
+                                      exit_start=exit_trading_period_start,
+                                      exit_end=exit_trading_period_end,
+                                      pricing=options_pricing_constant)
 
-        write_dict_to_pdf(viewable, line_height=report_line_height)
+        simulation_results = simulation.simulation_results
+
+        write_dict_to_pdf(simulation_results, line_height=report_line_height)
 
         global financial_data
-        financial_data = viewable
+        financial_data = simulation_results
+        global failed_attempts
+        failed_attempts = simulation.error_bound
 
         if open_report.upper() == "YES":
             open_recent_download()
@@ -78,9 +81,10 @@ def run_operations():
 @app.route('/financial_dashboard')
 def financial_dashboard():
     global financial_data
+    global failed_attempts
     if request.method == 'GET':
         if financial_data is not None:
-            return render_template('financial_dashboard.html', data=financial_data)
+            return render_template('financial_dashboard.html', data=financial_data, failed_attempts=failed_attempts)
         else:
             return render_template('financial_dashboard.html', data=None)
     else:

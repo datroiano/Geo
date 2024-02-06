@@ -70,6 +70,27 @@
     {% endfor %}
 </select>
 
+<div id="failedAttemptsContainer" style="position: absolute; top: 40px; right: 20px; width: 45%;">
+    <h2 style="margin-bottom: 10px;">Failed Simulation Attempts</h2>
+    <table id="failedAttemptsTable" style="float: right; margin-top: 0;">
+        <!-- Headers -->
+        <tr>
+            <th>Ticker</th>
+            <th>Reason for Failure</th>
+        </tr>
+        <!-- Data for failed attempts will be loaded dynamically using JavaScript -->
+    </table>
+</div>
+
+<script>
+    // Check if the table has data
+    if (/* condition to check if the table has data */) {
+        document.getElementById("failedAttemptsContainer").style.display = "block";
+    } else {
+        document.getElementById("failedAttemptsContainer").style.display = "none";
+    }
+</script>
+
 <!-- Content for displaying selected company data -->
 <div id="companyDataContainer">
     <h1 id="companyTitle"></h1>
@@ -204,6 +225,27 @@
         // Call the function to load company data
         loadCompanyData();
     }
+
+    // Update failed attempts table
+    function updateFailedAttempts(failedAttempts) {
+        var failedAttemptsTable = document.getElementById("failedAttemptsTable");
+        failedAttemptsTable.innerHTML = ""; // Clear existing data
+
+        // Add table headers
+        failedAttemptsTable.innerHTML += "<tr><th>Ticker</th><th>Reason for Failure</th></tr>";
+
+        // Loop through failed attempts and append rows
+        for (var i = 0; i < failedAttempts.length; i++) {
+            var ticker = failedAttempts[i][0];
+            var reason = failedAttempts[i][1];
+
+            // Append a new row to the table
+            failedAttemptsTable.innerHTML += "<tr><td>" + ticker + "</td><td>" + reason + "</td></tr>";
+        }
+    }
+
+    // Call the function to update failed attempts table
+    updateFailedAttempts({{ failed_attempts | tojson | safe }});
 
 
     // Initial load when the page loads

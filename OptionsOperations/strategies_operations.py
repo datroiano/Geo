@@ -1,6 +1,4 @@
-import math
 import statistics
-
 import OptionsOperations.options_contract_object as oc
 from OptionsOperations.naming_and_cleaning import *
 from OptionsOperations.__init__ import *

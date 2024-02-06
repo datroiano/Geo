@@ -5,9 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9ec2a096-cc25-4021-83ad-c171cb77a001" name="Changes" comment="init">
+      <change afterPath="$PROJECT_DIR$/FlaskIntegration/templates/error.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/OptionsOperations/master_class.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/FlaskIntegration/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/FlaskIntegration/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OptionsOperations/simulation_main.py" beforeDir="false" afterPath="$PROJECT_DIR$/OptionsOperations/simulation_main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FlaskIntegration/templates/financial_dashboard.html" beforeDir="false" afterPath="$PROJECT_DIR$/FlaskIntegration/templates/financial_dashboard.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/OptionsOperations/strategies_operations.py" beforeDir="false" afterPath="$PROJECT_DIR$/OptionsOperations/strategies_operations.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -18,8 +20,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="HTML File" />
         <option value="Python Script" />
+        <option value="HTML File" />
       </list>
     </option>
   </component>
@@ -92,7 +94,7 @@
       <recent name="C:\Users\dtroiano\PycharmProjects\Geo\OnlineTools\mysite\tradesimulation\templates" />
     </key>
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Python.__init__">
     <configuration name="__init__" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="Geo" />
       <option name="ENV_FILES" value="" />
